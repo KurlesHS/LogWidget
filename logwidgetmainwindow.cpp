@@ -53,12 +53,11 @@ void LogWidgetMainWindow::onTimer()
     int topRow = ui->treeView->indexAt(QPoint(0, 0)).row();
 
     int bottomRow = ui->treeView->indexAt(QPoint(0, ui->treeView->size().height())).row();
-    qDebug() << topRow << bottomRow;
     if (topRow >= 0) {
         if (bottomRow < 0) {
             bottomRow = topRow + 10000;
         }
-        for (; topRow < bottomRow; ++topRow) {
+        for (; topRow <= bottomRow; ++topRow) {
             QModelIndex index = m_model->index(topRow, 0);
             if (!m_model->proceesIndex(index)) {
                 break;

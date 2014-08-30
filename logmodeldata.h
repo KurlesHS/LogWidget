@@ -19,7 +19,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-
 public:
     QString fileDataUuid;
     QStringList listOfFiles;
@@ -28,7 +27,6 @@ public:
 
 
 private:
-    static QLabel *m_label;
     static FileLogWidget *m_fileLogWidget;
 
 };
