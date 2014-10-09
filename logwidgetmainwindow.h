@@ -26,6 +26,8 @@ private slots:
 
     void onTimer();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::LogWidgetMainWindow *ui;
     LogModelExtended *m_model;

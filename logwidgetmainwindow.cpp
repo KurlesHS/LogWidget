@@ -6,6 +6,7 @@
 #include <QUuid>
 #include <QTimer>
 #include <QDebug>
+#include <QFileIconProvider>
 
 LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,16 +14,16 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model(new LogModelExtended(this)),
     m_timer(new QTimer(this))
 {
-    m_timer->start(500);
+    //m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
     ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
     ui->treeView->setModel(m_model);
-    for (int i = 0; i < 10000; ++i) {
-        m_model->addFileRow(QUuid::createUuid().toString(), "");
-        m_model->addSimpleText(QString("row: %0").arg(i * 2 + 1));
-    }
+//    for (int i = 0; i < 10000; ++i) {
+//        m_model->addFileRow(QUuid::createUuid().toString(), "");
+//        m_model->addSimpleText(QString("row: %0").arg(i * 2 + 1));
+//    }
 }
 
 LogWidgetMainWindow::~LogWidgetMainWindow()
@@ -45,7 +46,9 @@ void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
 {
-    m_model->addFileRow(QUuid::createUuid().toString(), ui->lineEditFileName->text());
+    auto LogUUID = QUuid::createUuid().toString();
+    m_model->addFileRow(LogUUID, ui->lineEditFileName->text());
+    m_model->addFileInFileRow(LogUUID,"testAddFileInRow");
 }
 
 void LogWidgetMainWindow::onTimer()
@@ -63,5 +66,16 @@ void LogWidgetMainWindow::onTimer()
                 break;
             }
         }
+    }
+}
+
+void LogWidgetMainWindow::on_pushButton_2_clicked()
+{
+    if (!ui->lineEditFileName->text().isEmpty()){
+        QFileInfo fInfo(ui->lineEditFileName->text());
+        QFileIconProvider FIcon;
+        QIcon iFile = FIcon.icon(fInfo);
+        ui->pushButton_2->setIcon(iFile);
+
     }
 }

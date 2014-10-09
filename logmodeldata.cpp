@@ -3,16 +3,18 @@
 #include "filelogwidget.h"
 #include <QPainter>
 #include <QDebug>
+#include <QFileInfo>
+#include <QFileIconProvider>
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 
 LogModelData::LogModelData()
 {
-    static bool first = true;
-    if (first){
+//    static bool first = true;
+//    if (first){
         m_fileLogWidget = new FileLogWidget();
-        first = false;
-    }
+ //       first = false;
+   // }
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -32,8 +34,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->drawText(option.rect, text);
         painter->restore();
     } else if(type == INCOMING_FILE) {
-
         m_fileLogWidget->setPalette(p);
+       // m_fileLogWidget->setFilename(text);
         bool x = index.data(Qt::UserRole + 2).toBool();
         Qt::GlobalColor c = x ?
                     Qt::red : Qt::transparent;
@@ -63,3 +65,12 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     return retVal;
 
 }
+
+void LogModelData::setFile()
+{
+    if(type == INCOMING_FILE) {
+        m_fileLogWidget->setFilename(text);
+    }
+}
+
+

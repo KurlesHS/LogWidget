@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+
 namespace Ui {
 class FileLogWidget;
 }
@@ -14,6 +15,8 @@ class FileLogWidget : public QWidget
 public:
     explicit FileLogWidget(QWidget *parent = 0);
     ~FileLogWidget();
+    void setFilename(QString);
+    void addButton(QIcon);
 
 private:
     Ui::FileLogWidget *ui;
