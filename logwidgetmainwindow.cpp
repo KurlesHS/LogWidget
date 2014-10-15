@@ -14,11 +14,13 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model(new LogModelExtended(this)),
     m_timer(new QTimer(this))
 {
+   LogModelDelegate *mDelegate = new LogModelDelegate(this);
     //m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
     ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
+    //ui->treeView->setItemDelegate(mDelegate);
     ui->treeView->setModel(m_model);
 //    for (int i = 0; i < 10000; ++i) {
 //        m_model->addFileRow(QUuid::createUuid().toString(), "");
@@ -42,6 +44,7 @@ void LogWidgetMainWindow::on_toolButtonSelectFile_clicked()
 void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 {
     m_model->addSimpleText(ui->lineEditSimpleText->text());
+    ui->lineEditSimpleText->setText("");
 }
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
@@ -49,6 +52,7 @@ void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
     auto LogUUID = QUuid::createUuid().toString();
     m_model->addFileRow(LogUUID, ui->lineEditFileName->text());
     m_model->addFileInFileRow(LogUUID,"testAddFileInRow");
+    ui->lineEditFileName->setText("");
 }
 
 void LogWidgetMainWindow::onTimer()
