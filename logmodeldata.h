@@ -24,7 +24,6 @@ public:
     QStringList listOfFiles;
     QString text;
     int type;
-    void setFile();
 
 private:
     static FileLogWidget *m_fileLogWidget;    

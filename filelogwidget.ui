@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string/>
+      <string>xxxzxzxxz</string>
      </property>
      <property name="pixmap">
       <pixmap>../ARM-USK/src/Resources/Icons/id.png</pixmap>
