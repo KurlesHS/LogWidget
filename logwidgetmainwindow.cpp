@@ -13,16 +13,16 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model(new LogModelExtended(this)),
     m_timer(new QTimer(this))
 {
-    m_timer->start(500);
+    //m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
     ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
     ui->treeView->setModel(m_model);
-    for (int i = 0; i < 10000; ++i) {
-        m_model->addFileRow(QUuid::createUuid().toString(), "");
-        m_model->addSimpleText(QString("row: %0").arg(i * 2 + 1));
-    }
+//    for (int i = 0; i < 10000; ++i) {
+//        m_model->addFileRow(QUuid::createUuid().toString(), "");
+//        m_model->addSimpleText(QString("row: %0").arg(i * 2 + 1));
+//    }
 }
 
 LogWidgetMainWindow::~LogWidgetMainWindow()

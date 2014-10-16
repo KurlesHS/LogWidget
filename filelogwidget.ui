@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>236</width>
-    <height>69</height>
+    <height>98</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,15 +22,12 @@
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="fileIconLayout"/>
+   </item>
+   <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../ARM-USK/src/Resources/Icons/id.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>false</bool>
+      <string>TextLabel</string>
      </property>
     </widget>
    </item>

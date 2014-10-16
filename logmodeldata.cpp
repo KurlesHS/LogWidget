@@ -32,8 +32,10 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->drawText(option.rect, text);
         painter->restore();
     } else if(type == INCOMING_FILE) {
-
-        m_fileLogWidget->setPalette(p);
+        FileLogWidget *flog = new FileLogWidget();
+        flog->setFile(text);
+        flog->setPalette(p);
+        m_fileLogWidget = flog;
         bool x = index.data(Qt::UserRole + 2).toBool();
         Qt::GlobalColor c = x ?
                     Qt::red : Qt::transparent;
@@ -41,7 +43,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->fillRect(option.rect, c);
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
-        m_fileLogWidget->render(painter);
+        //m_fileLogWidget->render(painter);
+        flog->render(painter);
         painter->restore();
     }
 }

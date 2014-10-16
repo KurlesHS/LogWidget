@@ -14,7 +14,7 @@ class FileLogWidget : public QWidget
 public:
     explicit FileLogWidget(QWidget *parent = 0);
     ~FileLogWidget();
-
+    void setFile(QString filename);
 private:
     Ui::FileLogWidget *ui;
 };
