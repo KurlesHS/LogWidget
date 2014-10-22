@@ -51,7 +51,7 @@ void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
 {
     auto LogUUID = QUuid::createUuid().toString();
     m_model->addFileRow(LogUUID, ui->lineEditFileName->text());
-    m_model->addFileInFileRow(LogUUID,"testAddFileInRow");
+    m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
     ui->lineEditFileName->setText("");
 }
 

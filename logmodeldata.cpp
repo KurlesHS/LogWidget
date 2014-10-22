@@ -12,10 +12,10 @@ FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 LogModelData::LogModelData()
 {
    static bool first = true;
-//    */if (first){*/
-      //  m_fileLogWidget = new FileLogWidget();
-       // first = false;
-    //}
+    if (first){
+        m_fileLogWidget = new FileLogWidget();
+        first = false;
+    }
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -36,13 +36,18 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->restore();
     } else if(type == INCOMING_FILE) {
         m_fileLogWidget->setPalette(p);
+        m_fileLogWidget->setDescription(text);
+        m_fileLogWidget->cleanFiles();
+        for (const QString &file : listOfFiles) {
+            m_fileLogWidget->addFilename(file);
+        }
         bool x = index.data(Qt::UserRole + 2).toBool();
         Qt::GlobalColor c = x ?
                     Qt::red : Qt::transparent;
         p.setColor(QPalette::Window, QColor(c));
         painter->fillRect(option.rect, c);
         painter->save();
-        painter->translate(option.rect.x(), option.rect.y());
+        painter->translate(option.rect.topLeft());
 //        QFontMetrics fm(option.font);
 //        fm.height();
 //        int delta = option.rect.height() - fm.height();
@@ -63,7 +68,6 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         //FileLogWidget *filelog = new FileLogWidget();
         //m_fileLogWidget = filelog;
         //m_fileLogWidget->setFilename(text);
-        qDebug() << text;
         m_fileLogWidget->render(painter);
         //filelog->setFilename(text);
         //filelog->render(painter);
@@ -82,11 +86,21 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         int height = fm.height() + 6;
         retVal = QSize(width, height);
     } else if(type == INCOMING_FILE) {
-            m_fileLogWidget->adjustSize();
-            retVal = m_fileLogWidget->size();
+        m_fileLogWidget->setDescription(text);
+        m_fileLogWidget->cleanFiles();
+        for (const QString &file : listOfFiles) {
+            m_fileLogWidget->addFilename(file);
+        }
+        m_fileLogWidget->adjustSize();
+        retVal = m_fileLogWidget->sizeHint();
 
     }
     return retVal;
+
+}
+
+void LogModelData::cleanFiles()
+{
 
 }
 

@@ -17,24 +17,31 @@ FileLogWidget::~FileLogWidget()
     delete ui;
 }
 
-void FileLogWidget::setFilename(QString FileName)
+void FileLogWidget::addFilename(const QString &fileName)
 {    
-    if (!FileName.isEmpty()){
-        ui->label_2->setText(FileName);
-        QFileInfo fInfo(FileName);
+    if (!fileName.isEmpty()){
+        QFileInfo fInfo(fileName);
+
         QFileIconProvider FIcon;
         QIcon iFile = FIcon.icon(fInfo);
-        QPushButton *but =new QPushButton();
-        but->setIcon(iFile);
+        QLabel *but =new QLabel;
+        but->setPixmap(iFile.pixmap(QSize(32, 32)));
         ui->horizontalLayoutFile->addWidget(but);
     }
 }
 
-void FileLogWidget::addButton(QIcon fIcon)
+void FileLogWidget::setDescription(const QString &desc)
 {
-    if (!fIcon.isNull()){
-        QPushButton but;
-        but.setIcon(fIcon);
-        ui->verticalLayout->addWidget(&but);
+    ui->label_2->setText(desc);
+}
+
+void FileLogWidget::cleanFiles()
+{
+    QLayoutItem *child;
+    while ((child = ui->horizontalLayoutFile->takeAt(0)) != 0) {
+        if (child->widget()) {
+            delete child->widget();
+        }
+        delete child;
     }
 }

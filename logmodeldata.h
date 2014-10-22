@@ -19,15 +19,17 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
+private:
+    void cleanFiles();
+
 public:
     QString fileDataUuid;
     QStringList listOfFiles;
     QString text;    
     int type;
-    static FileLogWidget *m_fileLogWidget;
 
 private:
-    //static FileLogWidget *m_fileLogWidget;
+    static FileLogWidget *m_fileLogWidget;
 
 };
 
