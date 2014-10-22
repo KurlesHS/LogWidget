@@ -23,11 +23,10 @@ public:
     QString fileDataUuid;
     QStringList listOfFiles;
     QString text;    
-    int type;
-    static FileLogWidget *m_fileLogWidget;
+    int type;    
 
 private:
-    //static FileLogWidget *m_fileLogWidget;
+    static FileLogWidget *m_fileLogWidget;
 
 };
 

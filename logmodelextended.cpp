@@ -40,8 +40,6 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     data.type = INCOMING_FILE;
     data.text = description;
     data.fileDataUuid = uuid;
-    data.m_fileLogWidget = new FileLogWidget();
-    data.m_fileLogWidget->setFilename(description);
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     appendRow(item);

@@ -13,9 +13,8 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui(new Ui::LogWidgetMainWindow),
     m_model(new LogModelExtended(this)),
     m_timer(new QTimer(this))
-{
-   LogModelDelegate *mDelegate = new LogModelDelegate(this);
-  //  m_timer->start(500);
+{   
+    //m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
@@ -49,10 +48,12 @@ void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
 {
-    auto LogUUID = QUuid::createUuid().toString();
-    m_model->addFileRow(LogUUID, ui->lineEditFileName->text());
-    m_model->addFileInFileRow(LogUUID,"testAddFileInRow");
-    ui->lineEditFileName->setText("");
+    if (LogUUID.isNull()){
+        LogUUID = QUuid::createUuid().toString();
+        m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+    }
+        m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
+        ui->lineEditFileName->setText("");
 }
 
 void LogWidgetMainWindow::onTimer()
@@ -76,10 +77,9 @@ void LogWidgetMainWindow::onTimer()
 void LogWidgetMainWindow::on_pushButton_2_clicked()
 {
     if (!ui->lineEditFileName->text().isEmpty()){
-        QFileInfo fInfo(ui->lineEditFileName->text());
-        QFileIconProvider FIcon;
-        QIcon iFile = FIcon.icon(fInfo);
-        ui->pushButton_2->setIcon(iFile);
-
+        LogUUID = QUuid::createUuid().toString();
+        m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+        m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
+        ui->lineEditFileName->setText("");
     }
 }

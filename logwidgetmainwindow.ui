@@ -62,7 +62,11 @@
          <item>
           <widget class="QPushButton" name="pushButton_2">
            <property name="text">
-            <string>GetIcon</string>
+            <string>NewFile</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>C:/Documents and Settings/zaharchenkov/coffee.jpg</normaloff>C:/Documents and Settings/zaharchenkov/coffee.jpg</iconset>
            </property>
           </widget>
          </item>
@@ -89,7 +93,7 @@
      <x>0</x>
      <y>0</y>
      <width>973</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

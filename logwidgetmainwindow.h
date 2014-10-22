@@ -32,6 +32,7 @@ private:
     Ui::LogWidgetMainWindow *ui;
     LogModelExtended *m_model;
     QTimer *m_timer;
+    QString LogUUID;
 };
 
 #endif // LOGWIDGETMAINWINDOW_H

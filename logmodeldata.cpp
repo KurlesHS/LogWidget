@@ -10,12 +10,10 @@
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 
 LogModelData::LogModelData()
-{
-   static bool first = true;
-//    */if (first){*/
-      //  m_fileLogWidget = new FileLogWidget();
-       // first = false;
-    //}
+{   
+   if (m_fileLogWidget == nullptr){
+        m_fileLogWidget = new FileLogWidget();
+    }
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -35,7 +33,12 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->drawText(option.rect, text);
         painter->restore();
     } else if(type == INCOMING_FILE) {
+        m_fileLogWidget->setDescription(text);
+        m_fileLogWidget->cleanFiles();
         m_fileLogWidget->setPalette(p);
+        for (const QString &file : listOfFiles) {
+            m_fileLogWidget->addFile(file);
+        }
         bool x = index.data(Qt::UserRole + 2).toBool();
         Qt::GlobalColor c = x ?
                     Qt::red : Qt::transparent;
@@ -43,30 +46,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->fillRect(option.rect, c);
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
-//        QFontMetrics fm(option.font);
-//        fm.height();
-//        int delta = option.rect.height() - fm.height();
-//        delta /= 2;
-        //painter->translate(0, delta);
-        //m_fileLogWidget->render(painter);
-        //painter->drawText(option.rect, text);
-//        QString FileName = text;
-//        if (!FileName.isEmpty()){
-//            QFileInfo fInfo(FileName);
-//            QFileIconProvider FIcon;
-//            QIcon iFile = FIcon.icon(fInfo);
-//            //iFile.paint(painter,0,0,20,20);
-//        }
-        //painter->drawText(option.rect, text+delta);
-        //QWidget *widget = new QPushButton("bonjour");
-        //    widget->render(painter);
-        //FileLogWidget *filelog = new FileLogWidget();
-        //m_fileLogWidget = filelog;
-        //m_fileLogWidget->setFilename(text);
         qDebug() << text;
         m_fileLogWidget->render(painter);
-        //filelog->setFilename(text);
-        //filelog->render(painter);
         painter->restore();
     }
 }
@@ -82,9 +63,13 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         int height = fm.height() + 6;
         retVal = QSize(width, height);
     } else if(type == INCOMING_FILE) {
-            m_fileLogWidget->adjustSize();
-            retVal = m_fileLogWidget->size();
-
+        m_fileLogWidget->setDescription(text);
+        m_fileLogWidget->cleanFiles();
+        for (const QString &file : listOfFiles) {
+            m_fileLogWidget->addFile(file);
+        }
+        m_fileLogWidget->adjustSize();
+        retVal = m_fileLogWidget->size();
     }
     return retVal;
 
