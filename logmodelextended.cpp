@@ -27,7 +27,7 @@ void LogModelExtended::addPopup(const QString &text)
 {
     LogModelData data;
     data.type = POPUP_TEXT;
-    data.text = text;
+    data.text = text;    
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     appendRow(item);
@@ -40,7 +40,8 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     data.type = INCOMING_FILE;
     data.text = description;
     data.fileDataUuid = uuid;
-    //data.setFile();
+    data.m_fileLogWidget = new FileLogWidget();
+    data.m_fileLogWidget->setFilename(description);
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     appendRow(item);

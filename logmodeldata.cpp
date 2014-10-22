@@ -12,10 +12,10 @@ FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 LogModelData::LogModelData()
 {
    static bool first = true;
-    if (first){
-        m_fileLogWidget = new FileLogWidget();
-        first = false;
-    }
+//    */if (first){*/
+      //  m_fileLogWidget = new FileLogWidget();
+       // first = false;
+    //}
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -60,9 +60,13 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         //painter->drawText(option.rect, text+delta);
         //QWidget *widget = new QPushButton("bonjour");
         //    widget->render(painter);
-        FileLogWidget *filelog = new FileLogWidget();
-        filelog->setFilename(text);
-        filelog->render(painter);
+        //FileLogWidget *filelog = new FileLogWidget();
+        //m_fileLogWidget = filelog;
+        //m_fileLogWidget->setFilename(text);
+        qDebug() << text;
+        m_fileLogWidget->render(painter);
+        //filelog->setFilename(text);
+        //filelog->render(painter);
         painter->restore();
     }
 }
@@ -78,8 +82,9 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         int height = fm.height() + 6;
         retVal = QSize(width, height);
     } else if(type == INCOMING_FILE) {
-        m_fileLogWidget->adjustSize();
-        retVal = m_fileLogWidget->size();
+            m_fileLogWidget->adjustSize();
+            retVal = m_fileLogWidget->size();
+
     }
     return retVal;
 

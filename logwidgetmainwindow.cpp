@@ -15,7 +15,7 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_timer(new QTimer(this))
 {
    LogModelDelegate *mDelegate = new LogModelDelegate(this);
-    //m_timer->start(500);
+  //  m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
