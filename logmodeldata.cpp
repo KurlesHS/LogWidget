@@ -39,15 +39,24 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         for (const QString &file : listOfFiles) {
             m_fileLogWidget->addFile(file);
         }
+        painter->save();
+        painter->translate(option.rect.x(), option.rect.y());
+        qDebug() << text;
+        m_fileLogWidget->render(painter);
+        painter->restore();
+    } else if(type == POPUP_TEXT) {
         bool x = index.data(Qt::UserRole + 2).toBool();
         Qt::GlobalColor c = x ?
                     Qt::red : Qt::transparent;
         p.setColor(QPalette::Window, QColor(c));
         painter->fillRect(option.rect, c);
         painter->save();
-        painter->translate(option.rect.x(), option.rect.y());
-        qDebug() << text;
-        m_fileLogWidget->render(painter);
+        QFontMetrics fm(option.font);
+        fm.height();
+        int delta = option.rect.height() - fm.height();
+        delta /= 2;
+        painter->translate(0, delta);
+        painter->drawText(option.rect, text);
         painter->restore();
     }
 }
@@ -70,6 +79,11 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         }
         m_fileLogWidget->adjustSize();
         retVal = m_fileLogWidget->size();
+    } else if (type == POPUP_TEXT) {
+        QFontMetrics fm(option.font);
+        int width = fm.width(text);
+        int height = fm.height() + 6;
+        retVal = QSize(width, height);
     }
     return retVal;
 

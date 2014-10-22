@@ -14,7 +14,7 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model(new LogModelExtended(this)),
     m_timer(new QTimer(this))
 {   
-    //m_timer->start(500);
+    m_timer->start(500);
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
@@ -82,4 +82,10 @@ void LogWidgetMainWindow::on_pushButton_2_clicked()
         m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
         ui->lineEditFileName->setText("");
     }
+}
+
+void LogWidgetMainWindow::on_pushButton_clicked()
+{
+    m_model->addPopup(ui->lineEditPopup->text());
+    ui->lineEditPopup->setText("");
 }
