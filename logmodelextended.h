@@ -15,6 +15,7 @@ public:
     void addFileRow(const QString &uuid, const QString &description);
     void addFileInFileRow(const QString &uuid, const QString &filePath);
     bool proceesIndex(const QModelIndex &index);
+    bool clickPopup(const QModelIndex &index);
 
 signals:
 

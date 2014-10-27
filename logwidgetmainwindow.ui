@@ -108,9 +108,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QGraphicsView" name="graphicsView"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">

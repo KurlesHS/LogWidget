@@ -2,6 +2,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QDebug>
+#include <Qt>
 
 #include "logmodeldata.h"
 LogModelExtended::LogModelExtended(QObject *parent) :
@@ -27,9 +28,11 @@ void LogModelExtended::addPopup(const QString &text)
 {
     LogModelData data;
     data.type = POPUP_TEXT;
-    data.text = text;    
+    data.text = text;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
+    item->setData(true,Qt::UserRole+3);
+    item->setEditable(false);
     appendRow(item);
 }
 
@@ -60,9 +63,25 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
 {
     QStandardItem *item = itemFromIndex(index);
     if (item) {
-        bool state = item->data(Qt::UserRole + 2).toBool();
-        item->setData(!state, Qt::UserRole + 2);
+            bool state = item->data(Qt::UserRole + 2).toBool();
+            item->setData(!state, Qt::UserRole + 2);
         //item->setText("1234");
     }
     return item;
 }
+
+bool LogModelExtended::clickPopup(const QModelIndex &index)
+{
+    QStandardItem *item = itemFromIndex(index);
+    if (item) {
+        item->setData(false, Qt::UserRole + 3);
+        LogModelData data = item->data().value<LogModelData>();
+        QDateTime dateTime = QDateTime::currentDateTime();
+        QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
+        data.text = data.text +" "+ dateTimeString;
+        qDebug() << data.text;
+        item->setData(QVariant::fromValue<LogModelData>(data));
+    }
+    return item;
+}
+

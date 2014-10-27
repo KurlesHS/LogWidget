@@ -1,6 +1,7 @@
 #include "logmodeldelegate.h"
 #include "logmodeldata.h"
 #include "filelogwidget.h"
+#include "logmodelextended.h"
 #include <QPainter>
 #include <QDebug>
 #include <QLabel>

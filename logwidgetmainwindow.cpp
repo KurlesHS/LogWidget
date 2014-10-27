@@ -66,10 +66,11 @@ void LogWidgetMainWindow::onTimer()
             bottomRow = topRow + 10000;
         }
         for (; topRow <= bottomRow; ++topRow) {
-            QModelIndex index = m_model->index(topRow, 0);
-            if (!m_model->proceesIndex(index)) {
-                break;
-            }
+            QModelIndex index = m_model->index(topRow, 0);                        
+            if (index.data(Qt::UserRole+3).toBool())
+                if (!m_model->proceesIndex(index)) {
+                    break;
+                }
         }
     }
 }
@@ -88,4 +89,11 @@ void LogWidgetMainWindow::on_pushButton_clicked()
 {
     m_model->addPopup(ui->lineEditPopup->text());
     ui->lineEditPopup->setText("");
+}
+
+void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+{
+    if (index.data(Qt::UserRole+3).toBool())
+        m_model->clickPopup(index);
+
 }

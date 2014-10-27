@@ -19,13 +19,16 @@ SOURCES += main.cpp\
     logmodelextended.cpp \
     logmodeldata.cpp \
     logmodeldelegate.cpp \
-    filelogwidget.cpp
+    filelogwidget.cpp \
+    popupwidget.cpp
 
 HEADERS  += logwidgetmainwindow.h \
     logmodelextended.h \
     logmodeldata.h \
     logmodeldelegate.h \
-    filelogwidget.h
+    filelogwidget.h \
+    popupwidget.h
 
 FORMS    += logwidgetmainwindow.ui \
-    filelogwidget.ui
+    filelogwidget.ui \
+    popupwidget.ui

@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QPushButton>
+#include <QStandardItem>
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 
@@ -23,7 +24,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
     p.setBrush(QPalette::Window, color);
     painter->setFont(option.font);
-    if (type == SIMPLE_TEXT) {
+    qDebug() << type;
+    if (type == SIMPLE_TEXT) {        
         painter->save();
         QFontMetrics fm(option.font);
         fm.height();
@@ -41,15 +43,17 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
-        qDebug() << text;
         m_fileLogWidget->render(painter);
         painter->restore();
     } else if(type == POPUP_TEXT) {
-        bool x = index.data(Qt::UserRole + 2).toBool();
-        Qt::GlobalColor c = x ?
-                    Qt::red : Qt::transparent;
-        p.setColor(QPalette::Window, QColor(c));
-        painter->fillRect(option.rect, c);
+      qDebug() << index.data(Qt::UserRole+3).toBool();
+        if (index.data(Qt::UserRole+3).toBool()){
+            bool x = index.data(Qt::UserRole + 2).toBool();
+            Qt::GlobalColor c = x ?
+                        Qt::red : Qt::transparent;
+            p.setColor(QPalette::Window, QColor(c));
+            painter->fillRect(option.rect, c);
+        }
         painter->save();
         QFontMetrics fm(option.font);
         fm.height();

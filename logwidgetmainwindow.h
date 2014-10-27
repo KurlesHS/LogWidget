@@ -2,6 +2,7 @@
 #define LOGWIDGETMAINWINDOW_H
 
 #include <QMainWindow>
+#include <QModelIndex>
 
 class LogModelExtended;
 
@@ -29,6 +30,8 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
+
+    void on_treeView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::LogWidgetMainWindow *ui;
