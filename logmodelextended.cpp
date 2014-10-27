@@ -45,6 +45,8 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     data.fileDataUuid = uuid;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
+    item->setData(true,Qt::UserRole+3);
+    item->setEditable(false);
     appendRow(item);
     m_hashOfFileItems[uuid] = item;
 }
@@ -78,8 +80,7 @@ bool LogModelExtended::clickPopup(const QModelIndex &index)
         LogModelData data = item->data().value<LogModelData>();
         QDateTime dateTime = QDateTime::currentDateTime();
         QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
-        data.text = data.text +" "+ dateTimeString;
-        qDebug() << data.text;
+        data.time = dateTimeString;
         item->setData(QVariant::fromValue<LogModelData>(data));
     }
     return item;

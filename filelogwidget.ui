@@ -16,11 +16,13 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>xxxzxzxxz</string>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
-     <property name="pixmap">
-      <pixmap>../ARM-USK/src/Resources/Icons/id.png</pixmap>
+     <property name="text">
+      <string/>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
