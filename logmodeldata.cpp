@@ -1,6 +1,7 @@
 #include "logmodeldata.h"
 #include <QLabel>
 #include "filelogwidget.h"
+#include "popupwidget.h"
 #include <QPainter>
 #include <QDebug>
 #include <QFileInfo>
@@ -9,12 +10,17 @@
 #include <QStandardItem>
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
+PopupWidget *LogModelData::m_popupWidget = nullptr;
 
 LogModelData::LogModelData()
 {   
    if (m_fileLogWidget == nullptr){
         m_fileLogWidget = new FileLogWidget();
     }
+   if (m_popupWidget == nullptr){
+        m_popupWidget = new PopupWidget();
+    }
+
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -46,7 +52,9 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_fileLogWidget->render(painter);
         painter->restore();
     } else if(type == POPUP_TEXT) {
-      qDebug() << index.data(Qt::UserRole+3).toBool();
+        m_popupWidget->setDescription(text);
+        m_popupWidget->setTime(time);
+        qDebug() << index.data(Qt::UserRole+3).toBool();
         if (index.data(Qt::UserRole+3).toBool()){
             bool x = index.data(Qt::UserRole + 2).toBool();
             Qt::GlobalColor c = x ?
@@ -55,12 +63,14 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
             painter->fillRect(option.rect, c);
         }
         painter->save();
-        QFontMetrics fm(option.font);
-        fm.height();
-        int delta = option.rect.height() - fm.height();
-        delta /= 2;
-        painter->translate(0, delta);
-        painter->drawText(option.rect, text);
+//        QFontMetrics fm(option.font);
+//        fm.height();
+//        int delta = option.rect.height() - fm.height();
+//        delta /= 2;
+//        painter->translate(0, delta);
+//        painter->drawText(option.rect, text);
+        painter->translate(option.rect.x(), option.rect.y());
+        m_popupWidget->render(painter);
         painter->restore();
     }
 }

@@ -7,6 +7,7 @@
 #include <QStyleOptionViewItem>
 #include <QLabel>
 #include "filelogwidget.h"
+#include "popupwidget.h"
 
 #define SIMPLE_TEXT 0
 #define POPUP_TEXT 1
@@ -22,11 +23,13 @@ public:
 public:
     QString fileDataUuid;
     QStringList listOfFiles;
-    QString text;    
+    QString text;
+    QString time;
     int type;    
 
 private:
     static FileLogWidget *m_fileLogWidget;
+    static PopupWidget *m_popupWidget;
 
 };
 
