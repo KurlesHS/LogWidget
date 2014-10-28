@@ -26,9 +26,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
 public:
     QString fileDataUuid;
     QStringList listOfFiles;
+    QVector<QRect> listOfWidgetRect;
     QString text;
     QString time;
     int type;    
@@ -36,6 +39,7 @@ public:
 private:
     static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
+    void addRect(QRect rect);
 
 };
 

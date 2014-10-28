@@ -41,10 +41,10 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
 
     data.type = INCOMING_FILE;
     data.text = getDateTime()+" "+description;
-    data.fileDataUuid = uuid;
+    data.fileDataUuid = uuid;    
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
-    //item->setEditable(false);
+    item->setEditable(false);
     appendRow(item);
     m_hashOfFileItems[uuid] = item;
 }
@@ -53,8 +53,8 @@ void LogModelExtended::addFileInFileRow(const QString &uuid, const QString &file
 {
     QStandardItem *item = m_hashOfFileItems.value(uuid, nullptr);
     if (item) {
-        auto data = item->data().value<LogModelData>();
-        data.listOfFiles.append(filePath);
+        auto data = item->data().value<LogModelData>();        
+        data.listOfFiles.append(filePath);        
         item->setData(QVariant::fromValue<LogModelData>(data));
     }
 }
@@ -65,24 +65,33 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
     if (item) {
             bool state = item->data(PopupFlashRole).toBool();
             item->setData(!state, PopupFlashRole);
-        //item->setText("1234");
     }
     return item;
 }
 
-bool LogModelExtended::clickPopup(const QModelIndex &index)
+void LogModelExtended::clickPopup(const QModelIndex &index)
 {
     QStandardItem *item = itemFromIndex(index);
     if (item) {
         item->setData(false, PopupClickRole);
         LogModelData data = item->data().value<LogModelData>();
-//        QDateTime dateTime = QDateTime::currentDateTime();
-//        QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
-//        data.time = dateTimeString;
         data.time = getDateTime();
         item->setData(QVariant::fromValue<LogModelData>(data));
+    } 
+}
+
+void LogModelExtended::clickFile(const QModelIndex &index, const QPoint &pos)
+{
+    QStandardItem *item = itemFromIndex(index);
+    if (item) {
+        LogModelData data = item->data().value<LogModelData>();
+        for (const QRect &rect : data.listOfWidgetRect) {
+            qDebug()<< "File";
+            if (rect.contains(pos)){
+                 qDebug() << "Button Ok";
+            }
+        }
     }
-    return item;
 }
 
 QString LogModelExtended::getDateTime(){

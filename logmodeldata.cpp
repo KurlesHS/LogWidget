@@ -26,6 +26,8 @@ LogModelData::LogModelData()
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     //painter->drawText(0, 20, text);
+    qDebug() << "Paint";
+    QList<QRect> listRect;
     QPalette p = option.palette;
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
     p.setBrush(QPalette::Window, color);
@@ -45,7 +47,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_fileLogWidget->cleanFiles();
         m_fileLogWidget->setPalette(p);
         for (const QString &file : listOfFiles) {
-            m_fileLogWidget->addFile(file);
+            QRect fileRect = m_fileLogWidget->addFile(file);
+            listRect.append(fileRect);
         }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
@@ -72,6 +75,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
 QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    qDebug() << "Size";
     Q_UNUSED(option)
     Q_UNUSED(index)
     QSize retVal(0, 0);
@@ -83,8 +87,10 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     } else if(type == INCOMING_FILE) {
         m_fileLogWidget->setDescription(text);
         m_fileLogWidget->cleanFiles();
+        //listOfWidgetRect.clear();
         for (const QString &file : listOfFiles) {
-            m_fileLogWidget->addFile(file);
+            QRect fileRect = m_fileLogWidget->addFile(file);
+          //  listOfWidgetRect.append(fileRect);
         }
         m_fileLogWidget->adjustSize();
         retVal = m_fileLogWidget->size();
@@ -95,6 +101,18 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     }
     return retVal;
 
+}
+
+bool LogModelData::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    if(type == INCOMING_FILE) {
+        listOfWidgetRect.clear();
+        for (const QString &file : listOfFiles) {
+            QRect fileRect = m_fileLogWidget->addFile(file);
+            listOfWidgetRect.append(fileRect);
+            qDebug() << file;
+        }
+    }
 }
 
 

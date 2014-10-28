@@ -36,3 +36,16 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
     }
     return size;
 }
+
+bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    bool retVal = false;
+    QVariant x = index.data(LogDataRole);
+    if (x.canConvert<LogModelData>()){
+        LogModelData data = x.value<LogModelData>();
+        retVal = data.editorEvent(event,model,option,index);
+    } else {
+        retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
+    }
+    return retVal;
+}

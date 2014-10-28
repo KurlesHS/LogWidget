@@ -15,7 +15,7 @@ class FileLogWidget : public QWidget
 public:
     explicit FileLogWidget(QWidget *parent = 0);
     ~FileLogWidget();
-    void addFile(const QString &filename);
+    QRect addFile(const QString &filename);
     void setDescription(const QString &desc);
     void cleanFiles();
 

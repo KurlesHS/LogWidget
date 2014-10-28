@@ -17,6 +17,7 @@ PopupWidget::~PopupWidget()
 void PopupWidget::setDescription(const QString &desc)
 {
     ui->label_desc->setText(desc);
+    //ui->label_desc->setWordWrap(true);
 }
 
 void PopupWidget::setTime(const QString &time)
