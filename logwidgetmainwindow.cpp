@@ -99,3 +99,9 @@ void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
         m_model->clickPopup(index);
 
 }
+
+void LogWidgetMainWindow::on_treeView_clicked(const QModelIndex &index)
+{
+    qDebug() << QCursor::pos();
+    index.data().Rect;
+}

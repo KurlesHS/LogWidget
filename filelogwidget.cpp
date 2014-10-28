@@ -3,6 +3,7 @@
 
 #include <QFileIconProvider>
 #include <QFileInfo>
+#include <QProcess>
 #include <QPushButton>
 
 FileLogWidget::FileLogWidget(QWidget *parent) :
@@ -51,4 +52,11 @@ while ((child = ui->horizontalLayoutFile->takeAt(0)) != 0) {
         }
         delete child;
     }
+}
+
+void FileLogWidget::on_pushButton_clicked()
+{
+    QProcess process;
+    QString file = "C:\\test.txt";
+    process.execute(file);
 }

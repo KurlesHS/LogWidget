@@ -44,7 +44,7 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     data.fileDataUuid = uuid;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
-    item->setEditable(false);
+    //item->setEditable(false);
     appendRow(item);
     m_hashOfFileItems[uuid] = item;
 }

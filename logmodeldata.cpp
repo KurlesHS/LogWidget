@@ -38,7 +38,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         int delta = option.rect.height() - fm.height();
         delta /= 2;
         painter->translate(0, delta);
-        painter->drawText(option.rect,Qt::TextWordWrap, text);
+        painter->drawText(option.rect,Qt::TextWordWrap, text);        
         painter->restore();
     } else if(type == INCOMING_FILE) {
         m_fileLogWidget->setDescription(text);
@@ -54,6 +54,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     } else if(type == POPUP_TEXT) {
         m_popupWidget->setDescription(text);
         m_popupWidget->setTime(time);
+        m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
         m_popupWidget->setPalette(p);
         if (index.data(PopupClickRole).toBool()){
             bool x = index.data(PopupFlashRole).toBool();
@@ -64,8 +65,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
-        m_popupWidget->render(painter);
-        painter->restore();
+        m_popupWidget->render(painter);        
+        painter->restore();        
     }
 }
 
@@ -88,7 +89,7 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         m_fileLogWidget->adjustSize();
         retVal = m_fileLogWidget->size();
     } else if (type == POPUP_TEXT) {
-        m_popupWidget->setDescription(text);
+        m_popupWidget->setDescription(text);        
         m_popupWidget->setTime(time);
         retVal = m_popupWidget->size();
     }

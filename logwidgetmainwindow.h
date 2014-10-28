@@ -33,6 +33,8 @@ private slots:
 
     void on_treeView_doubleClicked(const QModelIndex &index);
 
+    void on_treeView_clicked(const QModelIndex &index);
+
 private:
     Ui::LogWidgetMainWindow *ui;
     LogModelExtended *m_model;

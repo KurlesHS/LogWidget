@@ -19,6 +19,9 @@ public:
     void setDescription(const QString &desc);
     void cleanFiles();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::FileLogWidget *ui;
 };
