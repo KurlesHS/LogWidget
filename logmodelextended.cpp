@@ -80,20 +80,6 @@ void LogModelExtended::clickPopup(const QModelIndex &index)
     } 
 }
 
-void LogModelExtended::clickFile(const QModelIndex &index, const QPoint &pos)
-{
-    QStandardItem *item = itemFromIndex(index);
-    if (item) {
-        LogModelData data = item->data().value<LogModelData>();
-        for (const QRect &rect : data.listOfWidgetRect) {
-            qDebug()<< "File";
-            if (rect.contains(pos)){
-                 qDebug() << "Button Ok";
-            }
-        }
-    }
-}
-
 QString LogModelExtended::getDateTime(){
     QDateTime dateTime = QDateTime::currentDateTime();
     QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");

@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QDebug>
 #include <QLabel>
+#include <QMouseEvent>
+
 LogModelDelegate::LogModelDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
@@ -39,13 +41,23 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
 
 bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    bool retVal = false;
-    QVariant x = index.data(LogDataRole);
-    if (x.canConvert<LogModelData>()){
-        LogModelData data = x.value<LogModelData>();
-        retVal = data.editorEvent(event,model,option,index);
-    } else {
-        retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
-    }
-    return retVal;
+   bool retVal = false;
+    if (event->type() == QEvent::MouseButtonDblClick) {
+    QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+    qDebug() << mouseEvent->pos();
+    qDebug() << option.rect;
+    QPoint mousePoint = mouseEvent->pos();
+    QRect localRect = option.rect;
+    mousePoint.setX(mousePoint.x()-localRect.x());
+    mousePoint.setY(mousePoint.y()-localRect.y());
+    if (mousePoint.x() > 0){
+      QVariant x = index.data(LogDataRole);
+        if (x.canConvert<LogModelData>()){
+            LogModelData data = x.value<LogModelData>();
+            data.checkDblClickFile(mousePoint);
+        }
+      }
+   }
+   retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
+   return retVal;
 }

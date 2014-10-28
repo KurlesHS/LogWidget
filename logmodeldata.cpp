@@ -8,6 +8,8 @@
 #include <QFileIconProvider>
 #include <QPushButton>
 #include <QStandardItem>
+#include <QMouseEvent>
+
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 PopupWidget *LogModelData::m_popupWidget = nullptr;
@@ -103,16 +105,18 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 
 }
 
-bool LogModelData::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+void LogModelData::checkDblClickFile(const QPoint &pos)
 {
-    if(type == INCOMING_FILE) {
-        listOfWidgetRect.clear();
-        for (const QString &file : listOfFiles) {
-            QRect fileRect = m_fileLogWidget->addFile(file);
-            listOfWidgetRect.append(fileRect);
-            qDebug() << file;
+    qDebug() << pos;
+    for (const QString &file : listOfFiles) {
+        QRect fileRect = m_fileLogWidget->addFile(file);
+        qDebug() << fileRect;
+        if (fileRect.contains(pos)){
+            qDebug() << "Open File";
         }
     }
 }
+
+
 
 

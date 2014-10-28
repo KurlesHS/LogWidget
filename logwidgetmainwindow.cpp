@@ -100,17 +100,17 @@ void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 
 }
 
-void LogWidgetMainWindow::on_treeView_clicked(const QModelIndex &index)
-{
-    //qDebug() << QCursor::pos();
-    QPoint globalPoint = ui->treeView->mapFromGlobal(QCursor::pos());
-    //qDebug() << ui->treeView->mapFromParent(QCursor::pos());
-    QRect localRect = ui->treeView->visualRect(index);
-    globalPoint.setX(globalPoint.x()-localRect.x());
-    globalPoint.setY(globalPoint.y()-localRect.y());
-    if (globalPoint.x() > 0){
-        m_model->clickFile(index,globalPoint);
-        //qDebug() << globalPoint;
-    }
-    //qDebug() << index.column();
-}
+//void LogWidgetMainWindow::on_treeView_clicked(const QModelIndex &index)
+//{
+//    //qDebug() << QCursor::pos();
+//    QPoint globalPoint = ui->treeView->mapFromGlobal(QCursor::pos());
+//    //qDebug() << ui->treeView->mapFromParent(QCursor::pos());
+//    QRect localRect = ui->treeView->visualRect(index);
+//    globalPoint.setX(globalPoint.x()-localRect.x());
+//    globalPoint.setY(globalPoint.y()-localRect.y());
+//    if (globalPoint.x() > 0){
+//        m_model->clickFile(index,globalPoint);
+//        //qDebug() << globalPoint;
+//    }
+//    //qDebug() << index.column();
+//}
