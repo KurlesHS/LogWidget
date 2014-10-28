@@ -12,11 +12,10 @@ LogModelExtended::LogModelExtended(QObject *parent) :
 }
 
 void LogModelExtended::addSimpleText(const QString &text)
-{
-    //QString currentDateTime = QDateTime::currentDateTime().toString();
+{    
     LogModelData data;
     data.type = SIMPLE_TEXT;
-    data.text = text;
+    data.text = getDateTime()+" "+text;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     item->setEditable(false);
@@ -28,7 +27,7 @@ void LogModelExtended::addPopup(const QString &text)
 {
     LogModelData data;
     data.type = POPUP_TEXT;
-    data.text = text;
+    data.text = getDateTime()+" "+text;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
     item->setEditable(false);
@@ -41,7 +40,7 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     LogModelData data;
 
     data.type = INCOMING_FILE;
-    data.text = description;
+    data.text = getDateTime()+" "+description;
     data.fileDataUuid = uuid;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
@@ -77,11 +76,17 @@ bool LogModelExtended::clickPopup(const QModelIndex &index)
     if (item) {
         item->setData(false, PopupClickRole);
         LogModelData data = item->data().value<LogModelData>();
-        QDateTime dateTime = QDateTime::currentDateTime();
-        QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
-        data.time = dateTimeString;
+//        QDateTime dateTime = QDateTime::currentDateTime();
+//        QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
+//        data.time = dateTimeString;
+        data.time = getDateTime();
         item->setData(QVariant::fromValue<LogModelData>(data));
     }
     return item;
 }
 
+QString LogModelExtended::getDateTime(){
+    QDateTime dateTime = QDateTime::currentDateTime();
+    QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
+    return dateTimeString;
+}

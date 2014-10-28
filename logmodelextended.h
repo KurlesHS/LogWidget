@@ -21,6 +21,7 @@ signals:
 private:
     QHash<QString, QStandardItem *> m_hashOfFileItems;
     QTimer *m_timer;
+    QString getDateTime();
 
 };
 
