@@ -44,8 +44,9 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
    bool retVal = false;
     if (event->type() == QEvent::MouseButtonDblClick) {
     QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-    qDebug() << mouseEvent->pos();
-    qDebug() << option.rect;
+    qDebug() << "mouse Pos" <<  mouseEvent->pos();
+    qDebug() << "fileRect" << option.rect;
+    qDebug() << "reult" << mouseEvent->pos().y() - option.rect.topLeft().y();
     QPoint mousePoint = mouseEvent->pos();
     QRect localRect = option.rect;
     mousePoint.setX(mousePoint.x()-localRect.x());
@@ -54,7 +55,7 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
       QVariant x = index.data(LogDataRole);
         if (x.canConvert<LogModelData>()){
             LogModelData data = x.value<LogModelData>();
-            data.checkDblClickFile(mousePoint);
+            data.checkDblClickFile(mousePoint, option.rect);
         }
       }
    }

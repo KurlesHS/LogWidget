@@ -18,7 +18,7 @@ FileLogWidget::~FileLogWidget()
     delete ui;
 }
 
-QRect FileLogWidget::addFile(const QString &filename)
+QPushButton* FileLogWidget::addFile(const QString &filename)
 {    
     if (!filename.isEmpty()){
         //ui->label_2->setText(filename);
@@ -34,8 +34,9 @@ QRect FileLogWidget::addFile(const QString &filename)
         but->setIcon(iFile);
         but->adjustSize();
         ui->horizontalLayoutFile->addWidget(but);
-        return but->rect();
+        return but;
     }
+    return 0;
 }
 
 void FileLogWidget::setDescription(const QString &desc)

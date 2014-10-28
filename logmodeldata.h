@@ -26,7 +26,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    void checkDblClickFile(const QPoint &pos);
+    void checkDblClickFile(const QPoint &pos, const QRect rect);
 
 public:
     QString fileDataUuid;

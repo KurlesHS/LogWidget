@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QPushButton;
+
 
 namespace Ui {
 class FileLogWidget;
@@ -15,7 +17,7 @@ class FileLogWidget : public QWidget
 public:
     explicit FileLogWidget(QWidget *parent = 0);
     ~FileLogWidget();
-    QRect addFile(const QString &filename);
+    QPushButton *addFile(const QString &filename);
     void setDescription(const QString &desc);
     void cleanFiles();
 

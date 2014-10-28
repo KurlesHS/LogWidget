@@ -28,7 +28,7 @@ LogModelData::LogModelData()
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     //painter->drawText(0, 20, text);
-    qDebug() << "Paint";
+    //qDebug() << "Paint";
     QList<QRect> listRect;
     QPalette p = option.palette;
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
@@ -49,8 +49,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_fileLogWidget->cleanFiles();
         m_fileLogWidget->setPalette(p);
         for (const QString &file : listOfFiles) {
-            QRect fileRect = m_fileLogWidget->addFile(file);
-            listRect.append(fileRect);
+            m_fileLogWidget->addFile(file);
         }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
@@ -77,7 +76,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
 QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    qDebug() << "Size";
+    //qDebug() << "Size";
     Q_UNUSED(option)
     Q_UNUSED(index)
     QSize retVal(0, 0);
@@ -91,7 +90,7 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         m_fileLogWidget->cleanFiles();
         //listOfWidgetRect.clear();
         for (const QString &file : listOfFiles) {
-            QRect fileRect = m_fileLogWidget->addFile(file);
+            m_fileLogWidget->addFile(file);
           //  listOfWidgetRect.append(fileRect);
         }
         m_fileLogWidget->adjustSize();
@@ -105,14 +104,31 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 
 }
 
-void LogModelData::checkDblClickFile(const QPoint &pos)
+void LogModelData::checkDblClickFile(const QPoint &pos, const QRect rect)
 {
     qDebug() << pos;
-    for (const QString &file : listOfFiles) {
-        QRect fileRect = m_fileLogWidget->addFile(file);
-        qDebug() << fileRect;
-        if (fileRect.contains(pos)){
-            qDebug() << "Open File";
+    m_fileLogWidget->setDescription(text);
+    m_fileLogWidget->cleanFiles();
+    QList<QPushButton*> buttons;
+    if (type == INCOMING_FILE){
+        for (const QString &file : listOfFiles) {
+            QPushButton *b = m_fileLogWidget->addFile(file);
+            buttons.append(b);
+            qDebug() << b;
+        }
+    }
+    m_fileLogWidget->adjustSize();
+
+    QPoint newPos(pos.x(), pos.y());
+    qDebug() << "y" << rect.topLeft().y() << pos.y();
+    //newPos = rect.topLeft();
+    for (int i = 0; i <buttons.size(); ++i) {
+        qDebug() << "pos1: " << buttons.at(i)->mapToParent(QPoint(0, 0));
+        QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
+        qDebug() << "check" << r << newPos;
+        if (r.contains(newPos)) {
+            qDebug() << "clicked at" << i;
+            break;
         }
     }
 }
