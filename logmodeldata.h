@@ -13,6 +13,12 @@
 #define POPUP_TEXT 1
 #define INCOMING_FILE 2
 
+enum {
+    LogDataRole = Qt::UserRole+1,
+    PopupFlashRole = Qt::UserRole+2,
+    PopupClickRole = Qt::UserRole+3
+};
+
 class LogModelData
 {
 public:

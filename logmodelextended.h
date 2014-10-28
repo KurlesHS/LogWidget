@@ -4,7 +4,6 @@
 #include <QStandardItemModel>
 #include <QHash>
 
-
 class LogModelExtended : public QStandardItemModel
 {
     Q_OBJECT

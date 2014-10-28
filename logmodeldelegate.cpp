@@ -14,7 +14,7 @@ LogModelDelegate::LogModelDelegate(QObject *parent) :
 void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 
-    QVariant x = index.data(Qt::UserRole + 1);
+    QVariant x = index.data(LogDataRole);
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
         data.paint(painter, option, index);
@@ -27,7 +27,7 @@ void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QSize size(0, 0);
-    QVariant x = index.data(Qt::UserRole + 1);
+    QVariant x = index.data(LogDataRole);
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
         size = data.sizeHint(option, index);

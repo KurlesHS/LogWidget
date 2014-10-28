@@ -2,6 +2,8 @@
 #include "ui_logwidgetmainwindow.h"
 #include "logmodeldelegate.h"
 #include "logmodelextended.h"
+#include "logmodeldata.h"
+
 #include <QFileDialog>
 #include <QUuid>
 #include <QTimer>
@@ -67,7 +69,7 @@ void LogWidgetMainWindow::onTimer()
         }
         for (; topRow <= bottomRow; ++topRow) {
             QModelIndex index = m_model->index(topRow, 0);                        
-            if (index.data(Qt::UserRole+3).toBool())
+            if (index.data(PopupClickRole).toBool())
                 if (!m_model->proceesIndex(index)) {
                     break;
                 }
@@ -93,7 +95,7 @@ void LogWidgetMainWindow::on_pushButton_clicked()
 
 void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 {
-    if (index.data(Qt::UserRole+3).toBool())
+    if (index.data(PopupClickRole).toBool())
         m_model->clickPopup(index);
 
 }

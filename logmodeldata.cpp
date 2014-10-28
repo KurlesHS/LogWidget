@@ -55,8 +55,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_popupWidget->setDescription(text);
         m_popupWidget->setTime(time);
         m_popupWidget->setPalette(p);
-        if (index.data(Qt::UserRole+3).toBool()){
-            bool x = index.data(Qt::UserRole + 2).toBool();
+        if (index.data(PopupClickRole).toBool()){
+            bool x = index.data(PopupFlashRole).toBool();
             Qt::GlobalColor c = x ?
                         Qt::red : Qt::transparent;
             p.setColor(QPalette::Window, QColor(c));

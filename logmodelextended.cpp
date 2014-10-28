@@ -30,9 +30,9 @@ void LogModelExtended::addPopup(const QString &text)
     data.type = POPUP_TEXT;
     data.text = text;
     auto item = new QStandardItem();
-    item->setData(QVariant::fromValue<LogModelData>(data));
-    item->setData(true,Qt::UserRole+3);
+    item->setData(QVariant::fromValue<LogModelData>(data));    
     item->setEditable(false);
+    item->setData(true,PopupClickRole);
     appendRow(item);
 }
 
@@ -44,8 +44,7 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     data.text = description;
     data.fileDataUuid = uuid;
     auto item = new QStandardItem();
-    item->setData(QVariant::fromValue<LogModelData>(data));
-    item->setData(true,Qt::UserRole+3);
+    item->setData(QVariant::fromValue<LogModelData>(data));    
     item->setEditable(false);
     appendRow(item);
     m_hashOfFileItems[uuid] = item;
@@ -65,8 +64,8 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
 {
     QStandardItem *item = itemFromIndex(index);
     if (item) {
-            bool state = item->data(Qt::UserRole + 2).toBool();
-            item->setData(!state, Qt::UserRole + 2);
+            bool state = item->data(PopupFlashRole).toBool();
+            item->setData(!state, PopupFlashRole);
         //item->setText("1234");
     }
     return item;
@@ -76,7 +75,7 @@ bool LogModelExtended::clickPopup(const QModelIndex &index)
 {
     QStandardItem *item = itemFromIndex(index);
     if (item) {
-        item->setData(false, Qt::UserRole + 3);
+        item->setData(false, PopupClickRole);
         LogModelData data = item->data().value<LogModelData>();
         QDateTime dateTime = QDateTime::currentDateTime();
         QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
