@@ -39,19 +39,14 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->drawText(option.rect,Qt::TextWordWrap, text);        
         painter->restore();
     } else if(type == INCOMING_FILE) {
-        m_fileLogWidget->setDescription(text);
-        m_fileLogWidget->cleanFiles();
+        setFileLogWidget();
         m_fileLogWidget->setPalette(p);
-        for (const QString &file : listOfFiles) {
-            m_fileLogWidget->addFile(file);
-        }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
         m_fileLogWidget->render(painter);
         painter->restore();
     } else if(type == POPUP_TEXT) {
-        m_popupWidget->setDescription(text);
-        m_popupWidget->setTime(time);
+        setPopipWidget();
         m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
         m_popupWidget->setPalette(p);
         if (index.data(PopupClickRole).toBool()){
@@ -79,16 +74,10 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         int height = fm.height() + 6;
         retVal = QSize(width, height);
     } else if(type == INCOMING_FILE) {
-        m_fileLogWidget->setDescription(text);
-        m_fileLogWidget->cleanFiles();
-        for (const QString &file : listOfFiles) {
-             m_fileLogWidget->addFile(file);
-        }
-        m_fileLogWidget->adjustSize();
+        setFileLogWidget();
         retVal = m_fileLogWidget->size();
     } else if (type == POPUP_TEXT) {
-        m_popupWidget->setDescription(text);        
-        m_popupWidget->setTime(time);
+        setPopipWidget();
         retVal = m_popupWidget->size();
     }
     return retVal;
@@ -115,6 +104,22 @@ void LogModelData::checkDblClickFile(const QPoint &pos)
        }
    }
 
+}
+
+void LogModelData::setFileLogWidget() const
+{
+    m_fileLogWidget->setDescription(text);
+    m_fileLogWidget->cleanFiles();
+    for (const QString &file : listOfFiles) {
+         m_fileLogWidget->addFile(file);
+    }
+    m_fileLogWidget->adjustSize();
+}
+
+void LogModelData::setPopipWidget() const
+{
+    m_popupWidget->setDescription(text);
+    m_popupWidget->setTime(time);
 }
 
 

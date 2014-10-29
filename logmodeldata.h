@@ -38,7 +38,8 @@ public:
 private:
     static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
-    void addRect(QRect rect);
+    void setFileLogWidget() const;
+    void setPopipWidget() const;
 
 };
 

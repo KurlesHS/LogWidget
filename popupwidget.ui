@@ -37,7 +37,7 @@
     <widget class="QLabel" name="label_time">
      <property name="font">
       <font>
-       <pointsize>6</pointsize>
+       <pointsize>7</pointsize>
       </font>
      </property>
      <property name="midLineWidth">
