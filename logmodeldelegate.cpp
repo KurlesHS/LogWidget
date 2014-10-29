@@ -42,10 +42,8 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
 bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
    bool retVal = false;
-    if (event->type() == QEvent::MouseButtonDblClick) {
+   if (event->type() == QEvent::MouseButtonDblClick) {
     QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-    qDebug() << mouseEvent->pos();
-    qDebug() << option.rect;
     QPoint mousePoint = mouseEvent->pos();
     QRect localRect = option.rect;
     mousePoint.setX(mousePoint.x()-localRect.x());
@@ -54,7 +52,9 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
       QVariant x = index.data(LogDataRole);
         if (x.canConvert<LogModelData>()){
             LogModelData data = x.value<LogModelData>();
-            data.checkDblClickFile(mousePoint);
+            if (data.type == INCOMING_FILE){
+                data.checkDblClickFile(mousePoint);
+            }
         }
       }
    }

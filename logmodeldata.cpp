@@ -4,11 +4,9 @@
 #include "popupwidget.h"
 #include <QPainter>
 #include <QDebug>
-#include <QFileInfo>
-#include <QFileIconProvider>
 #include <QPushButton>
-#include <QStandardItem>
-#include <QMouseEvent>
+#include <QDesktopServices>
+#include <QUrl>
 
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
@@ -27,14 +25,10 @@ LogModelData::LogModelData()
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    //painter->drawText(0, 20, text);
-    qDebug() << "Paint";
-    QList<QRect> listRect;
     QPalette p = option.palette;
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
     p.setBrush(QPalette::Window, color);
     painter->setFont(option.font);
-    //qDebug() << type;
     if (type == SIMPLE_TEXT) {        
         painter->save();
         QFontMetrics fm(option.font);
@@ -49,8 +43,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_fileLogWidget->cleanFiles();
         m_fileLogWidget->setPalette(p);
         for (const QString &file : listOfFiles) {
-            QRect fileRect = m_fileLogWidget->addFile(file);
-            listRect.append(fileRect);
+            m_fileLogWidget->addFile(file);
         }
         painter->save();
         painter->translate(option.rect.x(), option.rect.y());
@@ -77,7 +70,6 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
 QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    qDebug() << "Size";
     Q_UNUSED(option)
     Q_UNUSED(index)
     QSize retVal(0, 0);
@@ -89,10 +81,8 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     } else if(type == INCOMING_FILE) {
         m_fileLogWidget->setDescription(text);
         m_fileLogWidget->cleanFiles();
-        //listOfWidgetRect.clear();
         for (const QString &file : listOfFiles) {
-            QRect fileRect = m_fileLogWidget->addFile(file);
-          //  listOfWidgetRect.append(fileRect);
+             m_fileLogWidget->addFile(file);
         }
         m_fileLogWidget->adjustSize();
         retVal = m_fileLogWidget->size();
@@ -107,14 +97,24 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 
 void LogModelData::checkDblClickFile(const QPoint &pos)
 {
-    qDebug() << pos;
-    for (const QString &file : listOfFiles) {
-        QRect fileRect = m_fileLogWidget->addFile(file);
-        qDebug() << fileRect;
-        if (fileRect.contains(pos)){
-            qDebug() << "Open File";
-        }
-    }
+   m_fileLogWidget->setDescription(text);
+   m_fileLogWidget->cleanFiles();
+   QList<QPushButton*> buttons;
+   for (const QString &file : listOfFiles) {
+       QPushButton *b = m_fileLogWidget->addFile(file);
+       buttons.append(b);
+   }
+   m_fileLogWidget->adjustSize();
+   for (int i = 0; i <buttons.size(); ++i) {
+    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
+    //проверка попадание курсора в кнопку на виджете
+       if (r.contains(pos)) {
+       QString file ("file:///"+listOfFiles.at(i));
+       QDesktopServices::openUrl(file);
+       break;
+       }
+   }
+
 }
 
 

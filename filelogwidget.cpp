@@ -3,8 +3,8 @@
 
 #include <QFileIconProvider>
 #include <QFileInfo>
-#include <QProcess>
 #include <QPushButton>
+#include <QDebug>
 
 FileLogWidget::FileLogWidget(QWidget *parent) :
     QWidget(parent),
@@ -18,8 +18,8 @@ FileLogWidget::~FileLogWidget()
     delete ui;
 }
 
-QRect FileLogWidget::addFile(const QString &filename)
-{    
+QPushButton* FileLogWidget::addFile(const QString &filename)
+{        
     if (!filename.isEmpty()){
         //ui->label_2->setText(filename);
         QFileInfo fInfo(filename);
@@ -33,9 +33,10 @@ QRect FileLogWidget::addFile(const QString &filename)
         but->setText(tmpFile);
         but->setIcon(iFile);
         but->adjustSize();
-        ui->horizontalLayoutFile->addWidget(but);
-        return but->rect();
+        ui->horizontalLayoutFile->addWidget(but);               
+        return but;
     }
+    return 0;
 }
 
 void FileLogWidget::setDescription(const QString &desc)
@@ -55,9 +56,3 @@ while ((child = ui->horizontalLayoutFile->takeAt(0)) != 0) {
     }
 }
 
-void FileLogWidget::on_pushButton_clicked()
-{
-    QProcess process;
-    QString file = "C:\\test.txt";
-    process.execute(file);
-}

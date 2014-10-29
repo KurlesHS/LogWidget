@@ -1,6 +1,7 @@
 #ifndef FILELOGWIDGET_H
 #define FILELOGWIDGET_H
 
+#include <QPushButton>
 #include <QWidget>
 
 
@@ -15,12 +16,9 @@ class FileLogWidget : public QWidget
 public:
     explicit FileLogWidget(QWidget *parent = 0);
     ~FileLogWidget();
-    QRect addFile(const QString &filename);
+    QPushButton* addFile(const QString &filename);
     void setDescription(const QString &desc);
     void cleanFiles();
-
-private slots:
-    void on_pushButton_clicked();
 
 private:
     Ui::FileLogWidget *ui;
