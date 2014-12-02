@@ -5,34 +5,44 @@
 #include <Qt>
 
 #include "logmodeldata.h"
+
 LogModelExtended::LogModelExtended(QObject *parent) :
     QStandardItemModel(parent)
 {
 
 }
 
+
 void LogModelExtended::addSimpleText(const QString &text)
 {    
     LogModelData data;
     data.type = SIMPLE_TEXT;
-    data.text = getDateTime()+" "+text;
+    data.time = getDateTime();
+    data.text = text;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     item->setEditable(false);
-    appendRow(item);
-
+    auto itemDT = new QStandardItem(data.time);
+    itemDT->setData(getDateTime());
+    itemDT->setEditable(false);
+    appendRow(QList<QStandardItem*>() << itemDT << item);
 }
+
 
 void LogModelExtended::addPopup(const QString &text)
 {
     LogModelData data;
     data.type = POPUP_TEXT;
-    data.text = getDateTime()+" "+text;
+    data.time = getDateTime();
+    data.text = text;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
     item->setEditable(false);
     item->setData(true,PopupClickRole);
-    appendRow(item);
+    auto itemDT = new QStandardItem(data.time);
+    itemDT->setData(getDateTime());
+    itemDT->setEditable(false);
+    appendRow(QList<QStandardItem*>() << itemDT << item);
 }
 
 void LogModelExtended::addFileRow(const QString &uuid, const QString &description)
@@ -40,12 +50,17 @@ void LogModelExtended::addFileRow(const QString &uuid, const QString &descriptio
     LogModelData data;
 
     data.type = INCOMING_FILE;
-    data.text = getDateTime()+" "+description;
+    data.time = getDateTime();
+    data.text = description;
     data.fileDataUuid = uuid;    
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));    
     item->setEditable(false);
-    appendRow(item);
+    auto itemDT = new QStandardItem(data.time);
+    itemDT->setEditable(false);
+    itemDT->setData(getDateTime());
+    appendRow(QList<QStandardItem*>() << itemDT << item);
+
     m_hashOfFileItems[uuid] = item;
 }
 
@@ -57,6 +72,25 @@ void LogModelExtended::addFileInFileRow(const QString &uuid, const QString &file
         data.listOfFiles.append(filePath);        
         item->setData(QVariant::fromValue<LogModelData>(data));
     }
+}
+
+void LogModelExtended::addOpenMsg(const QString &text, const QString &uuid)
+{
+    LogModelData data;
+
+    data.type = OPEN_MESSAGE;
+    data.time = getDateTime();
+    data.text = text;
+    data.fileDataUuid = uuid;
+    auto item = new QStandardItem();
+    item->setData(QVariant::fromValue<LogModelData>(data));
+    item->setEditable(false);
+    item->setData(true,PopupClickRole);
+    auto itemDT = new QStandardItem(data.time);
+    itemDT->setEditable(false);
+    itemDT->setData(getDateTime());
+    appendRow(QList<QStandardItem*>() << itemDT << item);
+    m_hashOfFileItems[uuid] = item;
 }
 
 bool LogModelExtended::proceesIndex(const QModelIndex &index)
@@ -72,12 +106,14 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
 void LogModelExtended::clickPopup(const QModelIndex &index)
 {
     QStandardItem *item = itemFromIndex(index);
-    if (item) {
-        item->setData(false, PopupClickRole);
+    if (item) {        
+        bool state = item->data(PopupClickRole).toBool();
+        item->setData(!state, PopupClickRole);
         LogModelData data = item->data().value<LogModelData>();
-        data.time = getDateTime();
+        data.timeConfirm = getDateTime();
         item->setData(QVariant::fromValue<LogModelData>(data));
-    } 
+        qDebug()<< "State " << state;
+    }
 }
 
 QString LogModelExtended::getDateTime(){

@@ -13,15 +13,16 @@ public:
     void addPopup(const QString &text);
     void addFileRow(const QString &uuid, const QString &description);
     void addFileInFileRow(const QString &uuid, const QString &filePath);
+    void addOpenMsg(const QString &text,const QString &uuid);
     bool proceesIndex(const QModelIndex &index);
-    void clickPopup(const QModelIndex &index);
+    void clickPopup(const QModelIndex &index);    
 
 signals:
 
 private:
     QHash<QString, QStandardItem *> m_hashOfFileItems;
     QTimer *m_timer;
-    QString getDateTime();
+    QString getDateTime();    
 
 };
 

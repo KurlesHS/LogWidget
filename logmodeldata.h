@@ -11,6 +11,8 @@
 #define SIMPLE_TEXT 0
 #define POPUP_TEXT 1
 #define INCOMING_FILE 2
+#define OPEN_MESSAGE 3
+
 
 enum {
     LogDataRole = Qt::UserRole+1,
@@ -29,10 +31,10 @@ public:
 
 public:
     QString fileDataUuid;
-    QStringList listOfFiles;
-    QVector<QRect> listOfWidgetRect;
+    QStringList listOfFiles;    
     QString text;
     QString time;
+    QString timeConfirm;
     int type;    
 
 private:
