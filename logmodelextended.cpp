@@ -104,14 +104,16 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
 }
 
 void LogModelExtended::clickPopup(const QModelIndex &index)
-{
+{    
     QStandardItem *item = itemFromIndex(index);
+    qDebug() << "Item " << item->column() ;
     if (item) {        
         bool state = item->data(PopupClickRole).toBool();
         item->setData(!state, PopupClickRole);
         LogModelData data = item->data().value<LogModelData>();
         data.timeConfirm = getDateTime();
         item->setData(QVariant::fromValue<LogModelData>(data));
+
         qDebug()<< "State " << state;
     }
 }

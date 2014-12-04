@@ -20,8 +20,33 @@
       <x>9</x>
       <y>144</y>
       <width>955</width>
-      <height>121</height>
+      <height>241</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">  
+::item  {
+     border: 1px solid #7f7f7f;
+    border-top-color: transparent;
+    border-left-color: transparent;
+}
+ 
+::item:hover  {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+    border: 1px solid #bfcde4;
+}
+ 
+::item:selected  {
+    border: 1px solid #567dbc;
+}
+ 
+::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+}
+ 
+::item:selected:!active  {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
+}</string>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
@@ -37,28 +62,6 @@
     </attribute>
     <attribute name="headerShowSortIndicator" stdset="0">
      <bool>true</bool>
-    </attribute>
-   </widget>
-   <widget class="QTableView" name="tableView">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>271</y>
-      <width>955</width>
-      <height>187</height>
-     </rect>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <attribute name="horizontalHeaderHighlightSections">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderHighlightSections">
-     <bool>false</bool>
     </attribute>
    </widget>
    <widget class="QWidget" name="">

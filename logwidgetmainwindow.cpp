@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QDebug>
 
+
 LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LogWidgetMainWindow),
@@ -27,16 +28,17 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Сообщение")));
     ui->treeView->setItemDelegate(mDelegate);
     ui->treeView->setModel(m_model);
-    ui->treeView->setColumnWidth(0,110);
+    ui->treeView->setColumnWidth(0,112);
 
-    ui->tableView->setItemDelegate(mDelegate);
-    ui->tableView->setModel(m_model);
+//    ui->tableView->setItemDelegate(mDelegate);
+//    ui->tableView->setModel(m_model);
 
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->verticalHeader()->setDefaultSectionSize(18);
-    //ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->setColumnWidth(0,110);
-    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+//    ui->tableView->verticalHeader()->setVisible(false);
+//    ui->tableView->verticalHeader()->setDefaultSectionSize(18);
+//    //ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+//    ui->tableView->setColumnWidth(0,110);
+//    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+
 
     //ui->tableView->verticalHeader()->setMinimumHeight(22);
     //ui->tableView->verticalHeader()->setMaximumHeight(22);
@@ -123,10 +125,4 @@ void LogWidgetMainWindow::on_pushButton_3_clicked()
 {
     m_model->addOpenMsg(ui->lineEditOpenMsg->text(),ui->lineEditFileName->text());
     ui->lineEditOpenMsg->setText("");
-}
-
-void LogWidgetMainWindow::on_tableView_doubleClicked(const QModelIndex &index)
-{
-  //  if (index.data(PopupClickRole).toBool())
-        m_model->clickPopup(index);
 }

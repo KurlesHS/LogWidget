@@ -67,8 +67,14 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 fm.height();
                 int delta = option.rect.height() - fm.height();
                 delta /= 2;
-                painter->translate(2, delta);
-                painter->drawText(option.rect,Qt::TextWordWrap, text);
+                painter->translate(2,delta);
+                //painter->drawText(option.rect,Qt::TextWordWrap, text);
+                //painter->translate(option.rect.x(), option.rect.y());
+                QPixmap pixmap( "c:/arrow-down.png" );
+                int x = option.rect.right() - pixmap.width();
+                int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;
+
+                painter->drawPixmap(x-2,y-3,pixmap);
                 painter->restore();
             } else {
                 setPopipWidget();

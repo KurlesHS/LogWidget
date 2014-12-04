@@ -21,7 +21,8 @@ void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
         data.paint(painter, option, index);        
-    } else {
+    }
+    else {
         QStyledItemDelegate::paint(painter, option, index);
     }
 }
