@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDateTime>
 
 
 FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
@@ -20,7 +21,7 @@ LogModelData::LogModelData()
    if (m_popupWidget == nullptr){
         m_popupWidget = new PopupWidget();
     }
-
+    time = getCurrentTime();
 }
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -36,7 +37,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         int delta = option.rect.height() - fm.height();
         delta /= 2;
         painter->translate(2, delta);
-        painter->drawText(option.rect,Qt::TextWordWrap, text);        
+        painter->drawText(option.rect, text);
         painter->restore();
     } else if(type == INCOMING_FILE) {
         setFileLogWidget();
@@ -49,7 +50,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         setPopipWidget();
         m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
         m_popupWidget->setPalette(p);
-        if (index.data(PopupClickRole).toBool()){
+        if (timeConfirm.isEmpty()){
             bool x = index.data(PopupFlashRole).toBool();
             Qt::GlobalColor c = x ?
                         Qt::red : Qt::transparent;
@@ -61,7 +62,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         m_popupWidget->render(painter);        
         painter->restore();        
       } else if (type == OPEN_MESSAGE) {
-            if (index.data(PopupClickRole).toBool()){
+            if (!index.data(MsgShowRole).toBool()){
                 painter->save();
                 QFontMetrics fm(option.font);
                 fm.height();
@@ -69,11 +70,17 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 delta /= 2;
                 painter->translate(2,delta);
                 //painter->drawText(option.rect,Qt::TextWordWrap, text);
+                int offset = 0;
+                qDebug() << "TimeConfirm " << timeConfirm;
+                if (timeConfirm != ""){
+                    offset = 130;
+                }
+                painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
                 //painter->translate(option.rect.x(), option.rect.y());
-                QPixmap pixmap( "c:/arrow-down.png" );
+                QPixmap pixmap( ":/Icons/arrow-down.png" );
                 int x = option.rect.right() - pixmap.width();
                 int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;
-
+                painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 painter->drawPixmap(x-2,y-3,pixmap);
                 painter->restore();
             } else {
@@ -106,12 +113,12 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         setPopipWidget();
         retVal = m_popupWidget->size();
     } else if (type == OPEN_MESSAGE) {
-        if (index.data(PopupClickRole).toBool()){
-        QFontMetrics fm(option.font);
-        int width = fm.width(text);
-        int height = fm.height() + 6;
-        retVal = QSize(width, height);
-        } else {
+        if (!index.data(MsgShowRole).toBool()){
+            QFontMetrics fm(option.font);
+            int width = fm.width(text);
+            int height = fm.height() + 6;
+            retVal = QSize(width, height);
+        } else {            
             setPopipWidget();
             retVal = m_popupWidget->size();
         }
@@ -156,7 +163,53 @@ void LogModelData::setPopipWidget() const
 {
     m_popupWidget->setDescription(text);
     m_popupWidget->setTime(timeConfirm);
+    m_popupWidget->cleanFiles();
+    for (const QString &file : listOfFiles) {
+         m_popupWidget->addFile(file);
+    }
+    m_popupWidget->adjustSize();
 }
+
+bool LogModelData::checkDblClickMsg(const QPoint &pos)
+{
+    bool retval = false;
+    m_popupWidget->setDescription(text);
+    m_popupWidget->setTime(timeConfirm);
+    m_popupWidget->cleanFiles();
+   QList<QPushButton*> buttons;
+   for (const QString &file : listOfFiles) {
+       QPushButton *b = m_popupWidget->addFile(file);
+       buttons.append(b);
+   }
+   m_popupWidget->adjustSize();
+   for (int i = 0; i <buttons.size(); ++i) {
+    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
+    //проверка попадание курсора в кнопку на виджете
+       if (r.contains(pos)) {
+       QString file ("file:///"+listOfFiles.at(i));
+       QDesktopServices::openUrl(file);
+       break;
+       }
+   }
+   QLabel *lb_hide = m_popupWidget->checkHide();
+   QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
+   if (r.contains(pos)) {
+       if (timeConfirm.isEmpty())
+        timeConfirm = getCurrentTime();
+       retval = true;
+   }
+   return retval;
+
+}
+
+QString LogModelData::getCurrentTime()
+{
+        QDateTime dateTime = QDateTime::currentDateTime();
+        QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
+        return dateTimeString;
+
+}
+
 
 
 

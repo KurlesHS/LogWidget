@@ -1,6 +1,9 @@
 #include "popupwidget.h"
 #include "ui_popupwidget.h"
 
+#include <QFileIconProvider>
+#include <QFileInfo>
+#include <QPushButton>
 
 PopupWidget::PopupWidget(QWidget *parent):
     QWidget(parent),
@@ -23,6 +26,44 @@ void PopupWidget::setDescription(const QString &desc)
 void PopupWidget::setTime(const QString &time)
 {
     ui->label_time->setText(time);
+}
+
+void PopupWidget::cleanFiles()
+{
+    QLayoutItem *child;
+    while ((child = ui->Layout_file->takeAt(0)) != 0) {
+        if (child->widget()) {
+            delete child->widget();
+            }
+            delete child;
+    }
+}
+
+QPushButton *PopupWidget::addFile(const QString &filename)
+{
+    if (!filename.isEmpty()){
+        QFileInfo fInfo(filename);
+        QFileIconProvider FIcon;
+        QIcon iFile = FIcon.icon(fInfo);
+        QPushButton *but =new QPushButton();
+        int i = filename.lastIndexOf("/");
+        QString tmpFile = filename;
+        tmpFile.remove(0,i+1);
+        but->setToolTip(filename);
+        but->setText(tmpFile);
+        but->setIcon(iFile);
+        but->adjustSize();
+        ui->Layout_file->addWidget(but);
+        return but;
+    }
+    return 0;
+
+}
+
+QLabel *PopupWidget::checkHide()
+{
+    QLabel *lb_hide = ui->lb_icon;
+    return lb_hide;
 }
 
 

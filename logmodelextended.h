@@ -16,13 +16,13 @@ public:
     void addOpenMsg(const QString &text,const QString &uuid);
     bool proceesIndex(const QModelIndex &index);
     void clickPopup(const QModelIndex &index);    
+    QString getDateTime();
 
 signals:
 
 private:
     QHash<QString, QStandardItem *> m_hashOfFileItems;
-    QTimer *m_timer;
-    QString getDateTime();    
+    QTimer *m_timer;    
 
 };
 

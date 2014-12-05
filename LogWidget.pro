@@ -32,3 +32,6 @@ HEADERS  += logwidgetmainwindow.h \
 FORMS    += logwidgetmainwindow.ui \
     filelogwidget.ui \
     popupwidget.ui
+
+RESOURCES += \
+    resource.qrc

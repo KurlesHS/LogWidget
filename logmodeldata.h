@@ -17,7 +17,7 @@
 enum {
     LogDataRole = Qt::UserRole+1,
     PopupFlashRole = Qt::UserRole+2,
-    PopupClickRole = Qt::UserRole+3
+    MsgShowRole = Qt::UserRole+3
 };
 
 class LogModelData
@@ -28,6 +28,8 @@ public:
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     void checkDblClickFile(const QPoint &pos);
+    bool checkDblClickMsg(const QPoint &pos);
+    QString getCurrentTime();
 
 public:
     QString fileDataUuid;

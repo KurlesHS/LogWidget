@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>45</height>
+    <height>110</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,7 +22,7 @@
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>2</number>
    </property>
@@ -35,60 +35,86 @@
    <property name="bottomMargin">
     <number>3</number>
    </property>
-   <item>
-    <widget class="QLabel" name="label_desc">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QQuickWidget" name="quickWidget_2">
-     <property name="resizeMode">
-      <enum>QQuickWidget::SizeRootObjectToView</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_time">
-     <property name="font">
-      <font>
-       <pointsize>7</pointsize>
-      </font>
-     </property>
-     <property name="midLineWidth">
-      <number>0</number>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::AutoText</enum>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QQuickWidget" name="quickWidget">
-     <property name="resizeMode">
-      <enum>QQuickWidget::SizeRootObjectToView</enum>
-     </property>
-    </widget>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_desc">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="Layout_file"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_time">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lb_icon">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>7</pointsize>
+          </font>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resource.qrc">:/Icons/arrow-up.png</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QQuickWidget</class>
-   <extends>QWidget</extends>
-   <header>QQuickWidget</header>
-  </customwidget>
- </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

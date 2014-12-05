@@ -72,7 +72,8 @@ void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
 {
     if (LogUUID.isNull()){
         LogUUID = QUuid::createUuid().toString();
-        m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+        //m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+        m_model->addOpenMsg(ui->lineEditOpenMsg->text(),LogUUID);
     }
         m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
         ui->lineEditFileName->setText("");
@@ -89,7 +90,7 @@ void LogWidgetMainWindow::onTimer()
         }
         for (; topRow <= bottomRow; ++topRow) {
             QModelIndex index = m_model->index(topRow, 0);                        
-            if (index.data(PopupClickRole).toBool())
+            if (index.data(MsgShowRole).toBool())
                 if (!m_model->proceesIndex(index)) {
                     break;
                 }
@@ -101,7 +102,8 @@ void LogWidgetMainWindow::on_pushButton_2_clicked()
 {
     if (!ui->lineEditFileName->text().isEmpty()){
         LogUUID = QUuid::createUuid().toString();
-        m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+        //m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
+        m_model->addOpenMsg(ui->lineEditOpenMsg->text(),LogUUID);
         m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
         ui->lineEditFileName->setText("");
     }
@@ -115,8 +117,8 @@ void LogWidgetMainWindow::on_pushButton_clicked()
 
 void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 {
-  //  if (index.data(PopupClickRole).toBool())
-        m_model->clickPopup(index);
+//    if (!index.data(MsgShowRole).toBool())
+//        m_model->clickPopup(index);
 
 }
 
@@ -124,5 +126,5 @@ void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 void LogWidgetMainWindow::on_pushButton_3_clicked()
 {
     m_model->addOpenMsg(ui->lineEditOpenMsg->text(),ui->lineEditFileName->text());
-    ui->lineEditOpenMsg->setText("");
+    //ui->lineEditOpenMsg->setText("");
 }
