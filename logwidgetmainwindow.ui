@@ -55,7 +55,7 @@
      <bool>false</bool>
     </property>
     <attribute name="headerVisible">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="headerHighlightSections">
      <bool>true</bool>
@@ -64,24 +64,24 @@
      <bool>true</bool>
     </attribute>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
       <width>951</width>
-      <height>127</height>
+      <height>71</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
+     <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
         <string>Текст обычного</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QLineEdit" name="lineEditSimpleText"/>
+         <widget class="QLineEdit" name="lineEditTehText"/>
         </item>
         <item>
          <widget class="QPushButton" name="pushButtonAddSimpleText">
@@ -93,7 +93,7 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="0" column="2">
       <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
         <string>Попуп сообщение</string>
@@ -119,7 +119,7 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="0" column="1">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
         <string>Файл</string>
@@ -150,25 +150,6 @@
           <property name="icon">
            <iconset>
             <normaloff>C:/Documents and Settings/zaharchenkov/coffee.jpg</normaloff>C:/Documents and Settings/zaharchenkov/coffee.jpg</iconset>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="title">
-        <string>Открывающееся сообщение</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="lineEditOpenMsg"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_3">
-          <property name="text">
-           <string>AddOpenMsg</string>
           </property>
          </widget>
         </item>

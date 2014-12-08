@@ -8,16 +8,21 @@
 #include "filelogwidget.h"
 #include "popupwidget.h"
 
-#define SIMPLE_TEXT 0
-#define POPUP_TEXT 1
-#define INCOMING_FILE 2
-#define OPEN_MESSAGE 3
+#define INFO_MESSAGE 0
+#define TEHNICAL_MESSAGE 1
 
+#define LOCAL_MSG 0
+#define RECEIVE_MSG 1
+#define SENT_MSG 2
+
+#define WARM_MSG 3
+#define INFO_MSG 4
+#define ERROR_MSG 5
 
 enum {
-    LogDataRole = Qt::UserRole+1,
-    PopupFlashRole = Qt::UserRole+2,
-    MsgShowRole = Qt::UserRole+3
+    LogDataRole = Qt::UserRole+1,   //данные из модели
+    MsgFlashRole = Qt::UserRole+2,    //Сообщение должно моргать (false - не моргает, true - моргает)
+    MsgShowRole = Qt::UserRole+3    //Сообщение открыто (false- свернуто, true - раазвернуто)
 };
 
 class LogModelData
@@ -37,10 +42,11 @@ public:
     QString text;
     QString time;
     QString timeConfirm;
-    int type;    
+    int type;
+    int typeMsg;
 
 private:
-    static FileLogWidget *m_fileLogWidget;
+    //static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
     void setFileLogWidget() const;
     void setPopipWidget() const;

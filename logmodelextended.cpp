@@ -12,20 +12,40 @@ LogModelExtended::LogModelExtended(QObject *parent) :
 
 }
 
-
-void LogModelExtended::addSimpleText(const QString &text)
-{    
+void LogModelExtended::addMessage(const QString &text, const int type, const int module, const QString &uuid, const bool flash)
+{
     LogModelData data;
-    data.type = SIMPLE_TEXT;
+
+    data.type = INFO_MESSAGE;
     data.text = text;
+    data.fileDataUuid = uuid;
     auto item = new QStandardItem();
     item->setData(QVariant::fromValue<LogModelData>(data));
     item->setEditable(false);
+    item->setData(false,MsgShowRole);
+    item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
     auto itemDT = new QStandardItem(data.time);
-    itemDT->setData(data.time);
     itemDT->setEditable(false);
+    itemDT->setData(data.time);
     appendRow(QList<QStandardItem*>() << itemDT << item);
+    m_hashOfFileItems[uuid] = item;
+
 }
+
+
+//void LogModelExtended::addSimpleText(const QString &text)
+//{
+//    LogModelData data;
+//    data.type = SIMPLE_TEXT;
+//    data.text = text;
+//    auto item = new QStandardItem();
+//    item->setData(QVariant::fromValue<LogModelData>(data));
+//    item->setEditable(false);
+//    auto itemDT = new QStandardItem(data.time);
+//    itemDT->setData(data.time);
+//    itemDT->setEditable(false);
+//    appendRow(QList<QStandardItem*>() << itemDT << item);
+//}
 
 
 void LogModelExtended::addPopup(const QString &text)
@@ -71,11 +91,11 @@ void LogModelExtended::addFileInFileRow(const QString &uuid, const QString &file
     }
 }
 
-void LogModelExtended::addOpenMsg(const QString &text, const QString &uuid)
+void LogModelExtended::addInfoMsg(const QString &text, const QString &uuid)
 {
     LogModelData data;
 
-    data.type = OPEN_MESSAGE;
+    data.type = INFO_MESSAGE;
     data.text = text;
     data.fileDataUuid = uuid;
     auto item = new QStandardItem();

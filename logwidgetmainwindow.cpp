@@ -23,12 +23,14 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     LogModelDelegate *mDelegate = new LogModelDelegate(this);
     //ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
     //ui->treeView->setItemDelegateForColumn(1, new LogModelDelegate(this));
-    m_model->setColumnCount(2);
+    m_model->setColumnCount(3);
     m_model->setHorizontalHeaderItem(0,new QStandardItem(trUtf8("Время")));
-    m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Сообщение")));
+    m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Тип")));
+    m_model->setHorizontalHeaderItem(2,new QStandardItem(trUtf8("Сообщение")));
     ui->treeView->setItemDelegate(mDelegate);
     ui->treeView->setModel(m_model);
     ui->treeView->setColumnWidth(0,112);
+    ui->treeView->setColumnWidth(1,20);
 
 //    ui->tableView->setItemDelegate(mDelegate);
 //    ui->tableView->setModel(m_model);
@@ -64,8 +66,8 @@ void LogWidgetMainWindow::on_toolButtonSelectFile_clicked()
 
 void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 {
-    m_model->addSimpleText(ui->lineEditSimpleText->text());
-    ui->lineEditSimpleText->setText("");
+    //m_model->addSimpleText(ui->lineEditSimpleText->text());
+    //ui->lineEditSimpleText->setText("");
 }
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
