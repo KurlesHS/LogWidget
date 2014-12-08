@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>110</height>
+    <height>43</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,6 +39,9 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="label_desc">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>TextLabel</string>
        </property>
@@ -57,6 +60,18 @@
        </item>
        <item>
         <widget class="QLabel" name="label_time">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>110</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>

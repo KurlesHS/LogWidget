@@ -84,8 +84,7 @@ void LogModelExtended::addOpenMsg(const QString &text, const QString &uuid)
     item->setData(false,MsgShowRole);
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
     auto itemDT = new QStandardItem(data.time);
-    itemDT->setEditable(false);
-    itemDT->setData(data.time);
+    itemDT->setEditable(false);    
     appendRow(QList<QStandardItem*>() << itemDT << item);
     m_hashOfFileItems[uuid] = item;
 }

@@ -4,6 +4,7 @@
 #include <QFileIconProvider>
 #include <QFileInfo>
 #include <QPushButton>
+#include <QDebug>
 
 PopupWidget::PopupWidget(QWidget *parent):
     QWidget(parent),
@@ -30,13 +31,14 @@ void PopupWidget::setTime(const QString &time)
 
 void PopupWidget::cleanFiles()
 {
-    QLayoutItem *child;
+    QLayoutItem *child;    
     while ((child = ui->Layout_file->takeAt(0)) != 0) {
         if (child->widget()) {
             delete child->widget();
             }
             delete child;
     }
+    this->adjustSize();
 }
 
 QPushButton *PopupWidget::addFile(const QString &filename)
@@ -53,7 +55,7 @@ QPushButton *PopupWidget::addFile(const QString &filename)
         but->setText(tmpFile);
         but->setIcon(iFile);
         but->adjustSize();
-        ui->Layout_file->addWidget(but);
+        ui->Layout_file->addWidget(but);        
         return but;
     }
     return 0;
@@ -63,6 +65,7 @@ QPushButton *PopupWidget::addFile(const QString &filename)
 QLabel *PopupWidget::checkHide()
 {
     QLabel *lb_hide = ui->lb_icon;
+    qDebug() << lb_hide->mapToGlobal(QPoint(0,0));
     return lb_hide;
 }
 

@@ -2,5 +2,6 @@
     <qresource prefix="/Icons">
         <file>arrow-up.png</file>
         <file>arrow-down.png</file>
+        <file>page_white_text.png</file>
     </qresource>
 </RCC>
