@@ -16,11 +16,11 @@ LogModelDelegate::LogModelDelegate(QObject *parent) :
 void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {    
     QStyledItemDelegate::paint(painter, option, index);
-    QVariant x = index.data(LogDataRole);
+    QVariant x = index.data(LogDataRole);    
     //int i = index.column();
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
-        data.paint(painter, option, index);        
+        data.paint(painter, option, index);
     }
 //    else {
 //        QStyledItemDelegate::paint(painter, option, index);
@@ -44,6 +44,7 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
 bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
    bool retVal = false;
+   qDebug() << model->itemData(index);
    if (event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress) {
     QVariant x = index.data(LogDataRole);
         if (x.canConvert<LogModelData>()){
@@ -53,12 +54,9 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             mousePoint.setX(mousePoint.x()-localRect.x());
             mousePoint.setY(mousePoint.y()-localRect.y());
             LogModelData data = x.value<LogModelData>();
-            if (data.type == INCOMING_FILE){
-                data.checkDblClickFile(mousePoint);
-            }
-            else if (data.type == OPEN_MESSAGE || event->type() == QEvent::MouseButtonPress)
+            if (data.type == INFO_MESSAGE || event->type() == QEvent::MouseButtonPress)
                     if (index.data(MsgShowRole).toBool()) {
-                        if (data.checkDblClickMsg(mousePoint)){
+                        if (data.checkClickMsg(mousePoint)){
                             model->setData(index,false, MsgShowRole);                            
                             model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
                         }

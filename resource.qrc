@@ -3,5 +3,21 @@
         <file>arrow-up.png</file>
         <file>arrow-down.png</file>
         <file>page_white_text.png</file>
+        <file>Icon/archive.png</file>
+        <file>Icon/error_message.png</file>
+        <file>Icon/file.png</file>
+        <file>Icon/info_message.png</file>
+        <file>Icon/local_message.png</file>
+        <file>Icon/module_GSM.png</file>
+        <file>Icon/module_lvs.png</file>
+        <file>Icon/module_operator.png</file>
+        <file>Icon/module_USK.png</file>
+        <file>Icon/module_VoIP.png</file>
+        <file>Icon/online.png</file>
+        <file>Icon/receive_message.png</file>
+        <file>Icon/sent_message.png</file>
+        <file>Icon/start_refresh.png</file>
+        <file>Icon/stop_refresh.png</file>
+        <file>Icon/warn_message.png</file>
     </qresource>
 </RCC>

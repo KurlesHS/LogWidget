@@ -31,9 +31,9 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_treeView_doubleClicked(const QModelIndex &index);
+    //void on_treeView_doubleClicked(const QModelIndex &index);
 
-    void on_pushButton_3_clicked();   
+    //void on_pushButton_3_clicked();
 
 private:
     Ui::LogWidgetMainWindow *ui;

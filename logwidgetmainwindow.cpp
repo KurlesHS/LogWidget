@@ -30,7 +30,7 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui->treeView->setItemDelegate(mDelegate);
     ui->treeView->setModel(m_model);
     ui->treeView->setColumnWidth(0,112);
-    ui->treeView->setColumnWidth(1,20);
+    ui->treeView->setColumnWidth(1,30);
 
 //    ui->tableView->setItemDelegate(mDelegate);
 //    ui->tableView->setModel(m_model);
@@ -66,8 +66,8 @@ void LogWidgetMainWindow::on_toolButtonSelectFile_clicked()
 
 void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 {
-    //m_model->addSimpleText(ui->lineEditSimpleText->text());
-    //ui->lineEditSimpleText->setText("");
+    m_model->addMessage(ui->lineEditTehText->text(),1,ERROR_MSG);
+    ui->lineEditTehText->setText("");
 }
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
@@ -75,10 +75,11 @@ void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
     if (LogUUID.isNull()){
         LogUUID = QUuid::createUuid().toString();
         //m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
-        m_model->addOpenMsg(ui->lineEditOpenMsg->text(),LogUUID);
+        m_model->addMessage(ui->lineEditPopup->text(),1,ERROR_MSG,LogUUID);
     }
-        m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
+        m_model->addFileInMsg(LogUUID,ui->lineEditFileName->text());
         ui->lineEditFileName->setText("");
+        ui->lineEditPopup->setText("");
 }
 
 void LogWidgetMainWindow::onTimer()
@@ -103,30 +104,30 @@ void LogWidgetMainWindow::onTimer()
 void LogWidgetMainWindow::on_pushButton_2_clicked()
 {
     if (!ui->lineEditFileName->text().isEmpty()){
-        LogUUID = QUuid::createUuid().toString();
-        //m_model->addFileRow(LogUUID, ui->lineEditSimpleText->text());
-        m_model->addOpenMsg(ui->lineEditOpenMsg->text(),LogUUID);
-        m_model->addFileInFileRow(LogUUID,ui->lineEditFileName->text());
+        LogUUID = QUuid::createUuid().toString();        
+        m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,LogUUID);
+        m_model->addFileInMsg(LogUUID,ui->lineEditFileName->text());
         ui->lineEditFileName->setText("");
     }
 }
 
+//void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+//{
+////    if (!index.data(MsgShowRole).toBool())
+////        m_model->clickPopup(index);
+
+//}
+
+
+//void LogWidgetMainWindow::on_pushButton_3_clicked()
+//{
+//    m_model->addOpenMsg(ui->lineEditOpenMsg->text(),ui->lineEditFileName->text());
+//    //ui->lineEditOpenMsg->setText("");
+//}
+
+
 void LogWidgetMainWindow::on_pushButton_clicked()
 {
-    m_model->addPopup(ui->lineEditPopup->text());
+    m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,nullptr);
     ui->lineEditPopup->setText("");
-}
-
-void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
-{
-//    if (!index.data(MsgShowRole).toBool())
-//        m_model->clickPopup(index);
-
-}
-
-
-void LogWidgetMainWindow::on_pushButton_3_clicked()
-{
-    m_model->addOpenMsg(ui->lineEditOpenMsg->text(),ui->lineEditFileName->text());
-    //ui->lineEditOpenMsg->setText("");
 }

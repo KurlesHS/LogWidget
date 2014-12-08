@@ -17,8 +17,8 @@
    <widget class="QTreeView" name="treeView">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>144</y>
+      <x>10</x>
+      <y>90</y>
       <width>955</width>
       <height>241</height>
      </rect>
@@ -55,7 +55,7 @@
      <bool>false</bool>
     </property>
     <attribute name="headerVisible">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="headerHighlightSections">
      <bool>true</bool>

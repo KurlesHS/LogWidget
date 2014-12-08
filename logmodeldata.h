@@ -21,8 +21,9 @@
 
 enum {
     LogDataRole = Qt::UserRole+1,   //данные из модели
-    MsgFlashRole = Qt::UserRole+2,    //Сообщение должно моргать (false - не моргает, true - моргает)
-    MsgShowRole = Qt::UserRole+3    //Сообщение открыто (false- свернуто, true - раазвернуто)
+    MsgFlashRole = Qt::UserRole+2,    //
+    MsgShowRole = Qt::UserRole+3,    //Сообщение открыто (false- свернуто, true - раазвернуто)
+    MsgConfirmRole = Qt::UserRole+4    //Сообщение требует подтверждения
 };
 
 class LogModelData
@@ -32,8 +33,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    void checkDblClickFile(const QPoint &pos);
-    bool checkDblClickMsg(const QPoint &pos);
+    //void checkDblClickFile(const QPoint &pos);
+    bool checkClickMsg(const QPoint &pos);
     QString getCurrentTime();
 
 public:
@@ -44,11 +45,12 @@ public:
     QString timeConfirm;
     int type;
     int typeMsg;
+    int module;
 
 private:
     //static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
-    void setFileLogWidget() const;
+    //void setFileLogWidget() const;
     void setPopipWidget() const;
 
 };
