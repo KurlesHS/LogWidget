@@ -71,7 +71,6 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 painter->translate(2,delta);
                 //painter->drawText(option.rect,Qt::TextWordWrap, text);
                 int offset = 0;
-                qDebug() << "TimeConfirm " << timeConfirm;
                 if (timeConfirm != ""){
                     offset = 130;
                 }
@@ -82,10 +81,15 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;
                 painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 painter->drawPixmap(x-2,y-3,pixmap);
+                if (!listOfFiles.isEmpty()){
+                    pixmap.load(":/Icons/page_white_text.png");
+                    painter->drawPixmap(x-22,y-3,pixmap);
+                }
                 painter->restore();
             } else {
-                setPopipWidget();
+                setPopipWidget();                
                 m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
+                qDebug()<< "paint " << text << " size "<< m_popupWidget->height();
                 m_popupWidget->setPalette(p);
                 painter->save();
                 painter->translate(option.rect.x(), option.rect.y());
@@ -120,7 +124,7 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
             retVal = QSize(width, height);
         } else {            
             setPopipWidget();
-            retVal = m_popupWidget->size();
+            retVal = m_popupWidget->size();            
         }
     }
     return retVal;
@@ -181,6 +185,7 @@ bool LogModelData::checkDblClickMsg(const QPoint &pos)
        QPushButton *b = m_popupWidget->addFile(file);
        buttons.append(b);
    }
+   //QLabel *lb_hide = m_popupWidget->checkHide();
    m_popupWidget->adjustSize();
    for (int i = 0; i <buttons.size(); ++i) {
     QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
@@ -193,6 +198,8 @@ bool LogModelData::checkDblClickMsg(const QPoint &pos)
    }
    QLabel *lb_hide = m_popupWidget->checkHide();
    QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
+   qDebug() << r << " " << pos << " " << lb_hide->mapToGlobal(QPoint(0,0));
+
    if (r.contains(pos)) {
        if (timeConfirm.isEmpty())
         timeConfirm = getCurrentTime();
