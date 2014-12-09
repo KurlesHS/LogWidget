@@ -11,6 +11,7 @@ PopupWidget::PopupWidget(QWidget *parent):
     ui(new Ui::PopupWidget)
 {
     ui->setupUi(this);
+    ui->lb_file->resize(0,0);
 }
 
 PopupWidget::~PopupWidget()
@@ -25,7 +26,7 @@ void PopupWidget::setDescription(const QString &desc)
 }
 
 void PopupWidget::setTime(const QString &time)
-{
+{    
     ui->label_time->setText(time);
 }
 
@@ -64,9 +65,13 @@ QPushButton *PopupWidget::addFile(const QString &filename)
 
 QLabel *PopupWidget::checkHide()
 {
-    QLabel *lb_hide = ui->lb_icon;
-    qDebug() << lb_hide->mapToGlobal(QPoint(0,0));
+    QLabel *lb_hide = ui->lb_icon;    
     return lb_hide;
+}
+
+void PopupWidget::showIconFile(const bool show)
+{
+        ui->lb_file->setHidden(show);
 }
 
 

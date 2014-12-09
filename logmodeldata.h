@@ -13,7 +13,7 @@
 
 #define LOCAL_MSG 0
 #define RECEIVE_MSG 1
-#define SENT_MSG 2
+#define SEND_MSG 2
 
 #define WARM_MSG 3
 #define INFO_MSG 4
@@ -23,7 +23,8 @@ enum {
     LogDataRole = Qt::UserRole+1,   //данные из модели
     MsgFlashRole = Qt::UserRole+2,    //
     MsgShowRole = Qt::UserRole+3,    //Сообщение открыто (false- свернуто, true - раазвернуто)
-    MsgConfirmRole = Qt::UserRole+4    //Сообщение требует подтверждения
+    MsgConfirmRole = Qt::UserRole+4,    //Сообщение требует подтверждения
+    MsgTypeRole = Qt::UserRole+5
 };
 
 class LogModelData
@@ -34,7 +35,7 @@ public:
     QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     //void checkDblClickFile(const QPoint &pos);
-    bool checkClickMsg(const QPoint &pos);
+    bool checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option);
     QString getCurrentTime();
 
 public:
@@ -52,6 +53,7 @@ private:
     static PopupWidget *m_popupWidget;
     //void setFileLogWidget() const;
     void setPopipWidget() const;
+
 
 };
 

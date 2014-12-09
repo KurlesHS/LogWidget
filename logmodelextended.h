@@ -14,7 +14,7 @@ public:
     void addFileInMsg(const QString &uuid, const QString &filePath);
     bool proceesIndex(const QModelIndex &index);
     void clickPopup(const QModelIndex &index);
-    //QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const;
 
     QString getDateTime();
 

@@ -26,11 +26,11 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     m_model->setColumnCount(3);
     m_model->setHorizontalHeaderItem(0,new QStandardItem(trUtf8("Время")));
     m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Тип")));
-    m_model->setHorizontalHeaderItem(2,new QStandardItem(trUtf8("Сообщение")));
+    m_model->setHorizontalHeaderItem(2,new QStandardItem(trUtf8("Сообщение")));    
     ui->treeView->setItemDelegate(mDelegate);
     ui->treeView->setModel(m_model);
     ui->treeView->setColumnWidth(0,112);
-    ui->treeView->setColumnWidth(1,30);
+    ui->treeView->setColumnWidth(1,27);
 
 //    ui->tableView->setItemDelegate(mDelegate);
 //    ui->tableView->setModel(m_model);

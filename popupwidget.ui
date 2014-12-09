@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>43</height>
+    <width>528</width>
+    <height>86</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,6 +62,19 @@
         <layout class="QVBoxLayout" name="Layout_file"/>
        </item>
        <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="QLabel" name="label_time">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -87,6 +100,25 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="lb_file">
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resource.qrc">:/Icons/page_white_text.png</pixmap>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="lb_icon">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -96,8 +128,8 @@
          </property>
          <property name="baseSize">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>16</width>
+           <height>16</height>
           </size>
          </property>
          <property name="font">

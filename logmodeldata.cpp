@@ -26,6 +26,8 @@ LogModelData::LogModelData()
 
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    const static QPixmap listfile(":/Icons/page_white_text.png");
+
     QPalette p = option.palette;
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
     p.setBrush(QPalette::Window, color);
@@ -71,32 +73,42 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                     painter->fillRect(option.rect, c);
                 }
                 painter->save();
+
                 QFontMetrics fm(option.font);
-                fm.height();
                 int delta = option.rect.height() - fm.height();
                 delta /= 2;
-                painter->translate(2,delta);
-                //painter->drawText(option.rect,Qt::TextWordWrap, text);
+                painter->translate(2,delta);                
                 int offset = 0;
                 if (timeConfirm != ""){
                     offset = 130;
                 }
-                painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
-                //painter->translate(option.rect.x(), option.rect.y());
+
+                int widthText = fm.width(text);
+                if (widthText > option.rect.width()){
+                if ( type == INFO_MESSAGE){
+                       painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
+
+                } else {
+                       painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
+                    }
+                } else
+                    painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
                 QPixmap pixmap( ":/Icons/arrow-down.png" );
                 int x = option.rect.right() - pixmap.width();
-                int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;
-                painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
+                int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;                
                 painter->drawPixmap(x-2,y-3,pixmap);
                 if (!listOfFiles.isEmpty()){
-                    pixmap.load(":/Icons/page_white_text.png");
-                    painter->drawPixmap(x-22,y-3,pixmap);
+                    //pixmap.load(":/Icons/page_white_text.png");
+                    painter->drawPixmap(x-22,y-3,listfile);
+                    painter->drawText(option.rect.x()-40,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
+                } else {
+                    painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 }
                 painter->restore();
-            } else {
+            } else {                
                 setPopipWidget();                
-                m_popupWidget->resize(900,m_popupWidget->height());
-                qDebug()<< " size "<< m_popupWidget->height() << m_popupWidget->width() << option.rect.width();
+                qDebug() << "!!!paint";
+                m_popupWidget->resize(option.rect.width(),m_popupWidget->height());                                                
                 m_popupWidget->setPalette(p);
                 painter->save();
                 painter->translate(option.rect.x(), option.rect.y());
@@ -108,8 +120,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 }
 
 QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{   
-    qDebug() << option.rect;
+{       
     Q_UNUSED(option)
     Q_UNUSED(index)
     QSize retVal(0, 0);
@@ -174,6 +185,7 @@ void LogModelData::setPopipWidget() const
 {
     m_popupWidget->setDescription(text);
     m_popupWidget->setTime(timeConfirm);
+    m_popupWidget->showIconFile(listOfFiles.isEmpty());
     m_popupWidget->cleanFiles();
     for (const QString &file : listOfFiles) {
          m_popupWidget->addFile(file);
@@ -181,11 +193,11 @@ void LogModelData::setPopipWidget() const
     m_popupWidget->adjustSize();
 }
 
-bool LogModelData::checkClickMsg(const QPoint &pos)
-{
+bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option)
+{    
     bool retval = false;
     m_popupWidget->setDescription(text);
-    m_popupWidget->setTime(timeConfirm);
+    //m_popupWidget->setTime(timeConfirm);
     m_popupWidget->cleanFiles();
    QList<QPushButton*> buttons;
    for (const QString &file : listOfFiles) {
@@ -194,6 +206,8 @@ bool LogModelData::checkClickMsg(const QPoint &pos)
    }
    //QLabel *lb_hide = m_popupWidget->checkHide();   
    m_popupWidget->adjustSize();
+   m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
+   m_popupWidget->updateGeometry();
    for (int i = 0; i <buttons.size(); ++i) {
     QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
     //проверка попадание курсора в кнопку на виджете
@@ -204,8 +218,9 @@ bool LogModelData::checkClickMsg(const QPoint &pos)
        }
    }
    QLabel *lb_hide = m_popupWidget->checkHide();
-   QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
-   qDebug() << r << " " << pos << " " << lb_hide->mapToGlobal(QPoint(0,0));
+   //QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
+   QRect r(QPoint(m_popupWidget->width()-16,m_popupWidget->height()-16),lb_hide->size());
+   qDebug() << r << pos;
 
    if (r.contains(pos)) {
        if (timeConfirm.isEmpty())

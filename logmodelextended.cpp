@@ -29,8 +29,10 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
     auto itemDT = new QStandardItem(data.time);
     itemDT->setEditable(false);        
-    auto itemType = new QStandardItem(QIcon(":/Icons/Icon/error_message.png"),"");
+    auto itemType = new QStandardItem();
+    itemType->setData(data.typeMsg,MsgTypeRole);
     itemType->setEditable(false);
+    //itemType->setTextAlignment(Qt::AlignRight);
     appendRow(QList<QStandardItem*>() << itemDT << itemType << item);
     if (!uuid.isEmpty()) {
         m_hashOfFileItems[uuid] = item;
@@ -53,8 +55,11 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
     auto itemDT = new QStandardItem(data.time);
     itemDT->setEditable(false);
-    auto itemType = new QStandardItem(data.typeMsg);
+    auto itemType = new QStandardItem();
+    itemType->setData(data.typeMsg,MsgTypeRole);
+    //itemType->setIcon(QIcon(":/Icons/Icon/info_message.pg"));
     itemType->setEditable(false);
+    //itemType->setTextAlignment(Qt::AlignCenter);
     appendRow(QList<QStandardItem*>() << itemDT << itemType << item);
 }
 
@@ -170,3 +175,65 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
 //    QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
 //    return dateTimeString;
 //}
+
+QVariant LogModelExtended::data(const QModelIndex &index, int role) const
+{
+    const static QIcon local_message(":/Icons/Icon/local_message.png");
+    const static QIcon receive_message(":/Icons/Icon/receive_message.png");
+    const static QIcon send_message(":/Icons/Icon/send_message.png");
+
+    const static QIcon message(":/Icons/Icon/info_message.png");
+    const static QIcon warning(":/Icons/Icon/warn_message.png");
+    const static QIcon error(":/Icons/Icon/error_message.png");
+
+    if (role == Qt::DecorationRole && index.column() == 1)
+    {
+        switch(data(index,MsgTypeRole).toInt())
+        {
+        case LOCAL_MSG:
+        {
+            return local_message;
+            break;
+        }
+        case RECEIVE_MSG:
+        {
+            return receive_message;
+            break;
+        }
+        case SEND_MSG:
+        {
+            return send_message;
+            break;
+        }
+        case INFO_MSG:
+        {
+            return message;
+            break;
+        }
+        case WARM_MSG:
+        {
+            return warning;
+            break;
+        }
+        case ERROR_MSG:
+        {
+            return error;
+            break;
+        }
+        default:
+            return message;
+            break;
+        }
+    }
+    if (role == Qt::ForegroundRole && index.column() == 1)
+    {
+        int type = data(index,MsgTypeRole).toInt();
+        if (type == 2)
+            return QBrush(Qt::red);
+        else if (type == 1) {
+            return QBrush(Qt::black);
+        }
+    }
+    return QStandardItemModel::data(index, role);
+}
+

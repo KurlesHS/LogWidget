@@ -22,6 +22,7 @@ public:
     void cleanFiles();
     QPushButton *addFile(const QString &filename);
     QLabel *checkHide();
+    void showIconFile(const bool show);
 
 private:
     Ui::PopupWidget *ui;
