@@ -27,6 +27,7 @@ LogModelData::LogModelData()
 void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     const static QPixmap listfile(":/Icons/page_white_text.png");
+    const static QPixmap arrowdown( ":/Icons/arrow-down.png" );
 
     QPalette p = option.palette;
     auto color = index.data(Qt::BackgroundRole).value<QBrush>();
@@ -39,7 +40,18 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         int delta = option.rect.height() - fm.height();
         delta /= 2;
         painter->translate(2, delta);
-        painter->drawText(option.rect, text);
+        qDebug() << fm.width(text) << option.rect;
+        if (fm.width(text) > option.rect.width()){
+            QRect rect = option.rect;
+            //отрисовываем текст сообщения
+            rect.setWidth(rect.width()-20);
+            painter->drawText(rect,Qt::TextSingleLine,text);
+            rect.setX(option.rect.x()+option.rect.width()-18);
+            rect.setWidth(20);
+            painter->drawText(rect,"...");
+        } else {
+            painter->drawText(option.rect, text);
+        }
         painter->restore();
 //    } else if(type == INCOMING_FILE) {
 //        setFileLogWidget();
@@ -78,31 +90,43 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 int delta = option.rect.height() - fm.height();
                 delta /= 2;
                 painter->translate(2,delta);                
+
                 int offset = 0;
-                if (timeConfirm != ""){
-                    offset = 130;
+
+                //для кнопки открыть сообщение
+                int x = option.rect.right() - arrowdown.width();
+                int y = option.rect.top() + ( option.rect.height() - arrowdown.height() ) / 2;
+                //
+
+                if (!listOfFiles.isEmpty()){
+                     painter->drawPixmap(x-22,y-3,listfile);
+                     painter->drawPixmap(x-2,y-3,arrowdown);
+                     offset += 40;
+                }
+                if (!timeConfirm.isEmpty()) {
+                //    painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
+                   offset += fm.width(timeConfirm);
                 }
 
-                int widthText = fm.width(text);
-                if (widthText > option.rect.width()){
-                if ( type == INFO_MESSAGE){
-                       painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
 
+                int widthText = fm.width(text);
+                if (widthText > option.rect.width()-offset){
+                    if (listOfFiles.isEmpty()) {
+                        painter->drawPixmap(x-2,y-3,arrowdown);
+                        offset += 20;
+                    }
+                    QRect rect = option.rect;
+                    //отрисовываем текст сообщения
+                    rect.setWidth(rect.width()-20-offset);
+                    painter->drawText(rect,Qt::TextSingleLine,text);
+                    rect.setX(option.rect.x()+option.rect.width()-18-offset);
+                    rect.setWidth(20);
+                    painter->drawText(rect,"...");
                 } else {
                        painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
-                    }
-                } else
-                    painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
-                QPixmap pixmap( ":/Icons/arrow-down.png" );
-                int x = option.rect.right() - pixmap.width();
-                int y = option.rect.top() + ( option.rect.height() - pixmap.height() ) / 2;                
-                painter->drawPixmap(x-2,y-3,pixmap);
-                if (!listOfFiles.isEmpty()){
-                    //pixmap.load(":/Icons/page_white_text.png");
-                    painter->drawPixmap(x-22,y-3,listfile);
-                    painter->drawText(option.rect.x()-40,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
-                } else {
-                    painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
+                }
+                if (!timeConfirm.isEmpty()) {
+                    painter->drawText(option.rect.x()-offset+fm.width(timeConfirm),option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 }
                 painter->restore();
             } else {                

@@ -67,7 +67,7 @@ void LogWidgetMainWindow::on_toolButtonSelectFile_clicked()
 void LogWidgetMainWindow::on_pushButtonAddSimpleText_clicked()
 {
     m_model->addMessage(ui->lineEditTehText->text(),1,ERROR_MSG);
-    ui->lineEditTehText->setText("");
+    //ui->lineEditTehText->setText("");
 }
 
 void LogWidgetMainWindow::on_pushButtonAddFile_clicked()
@@ -129,5 +129,5 @@ void LogWidgetMainWindow::on_pushButton_2_clicked()
 void LogWidgetMainWindow::on_pushButton_clicked()
 {
     m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,nullptr);
-    ui->lineEditPopup->setText("");
+   // ui->lineEditPopup->setText("");
 }
