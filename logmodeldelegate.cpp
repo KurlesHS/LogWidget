@@ -17,7 +17,6 @@ void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 {    
     QStyledItemDelegate::paint(painter, option, index);
     QVariant x = index.data(LogDataRole);    
-    //int i = index.column();
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
         data.paint(painter, option, index);
@@ -33,18 +32,16 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
     QVariant x = index.data(LogDataRole);
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
-        size = data.sizeHint(option, index);
+        size = data.sizeHint(option, index);        
     } else {
         size = QStyledItemDelegate::sizeHint(option, index);                
-    }
-        qDebug() << size;
+    }        
     return size;
 }
 
 bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-   bool retVal = false;
-   qDebug() << model->itemData(index);
+   bool retVal = false;  
    if (event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress) {
     QVariant x = index.data(LogDataRole);
         if (x.canConvert<LogModelData>()){

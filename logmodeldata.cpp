@@ -95,8 +95,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 painter->restore();
             } else {
                 setPopipWidget();                
-                m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
-                qDebug()<< "paint " << text << " size "<< m_popupWidget->height();
+                m_popupWidget->resize(900,m_popupWidget->height());
+                qDebug()<< " size "<< m_popupWidget->height() << m_popupWidget->width() << option.rect.width();
                 m_popupWidget->setPalette(p);
                 painter->save();
                 painter->translate(option.rect.x(), option.rect.y());
@@ -108,7 +108,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 }
 
 QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+{   
+    qDebug() << option.rect;
     Q_UNUSED(option)
     Q_UNUSED(index)
     QSize retVal(0, 0);
@@ -131,11 +132,10 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
             retVal = QSize(width, height);
         } else {            
             setPopipWidget();
-            retVal = m_popupWidget->size();            
+            retVal = m_popupWidget->size();                        
         }
-    }
+    }    
     return retVal;
-
 }
 
 //void LogModelData::checkDblClickFile(const QPoint &pos)
@@ -192,7 +192,7 @@ bool LogModelData::checkClickMsg(const QPoint &pos)
        QPushButton *b = m_popupWidget->addFile(file);
        buttons.append(b);
    }
-   //QLabel *lb_hide = m_popupWidget->checkHide();
+   //QLabel *lb_hide = m_popupWidget->checkHide();   
    m_popupWidget->adjustSize();
    for (int i = 0; i <buttons.size(); ++i) {
     QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
