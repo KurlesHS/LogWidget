@@ -96,7 +96,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
             } else {
                 setPopipWidget();                
                 m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
-                qDebug()<< "paint " << text << " size "<< m_popupWidget->height();
+                qDebug()<< "!!!paint " << text << " size "<< m_popupWidget->height() << option.rect.width() << m_popupWidget->width();
                 m_popupWidget->setPalette(p);
                 painter->save();
                 painter->translate(option.rect.x(), option.rect.y());
