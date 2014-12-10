@@ -37,6 +37,8 @@ public:
     //void checkDblClickFile(const QPoint &pos);
     bool checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option);
     QString getCurrentTime();
+    void setConfirm();
+    bool checkBigMsg(const QStyleOptionViewItem &option);
 
 public:
     QString fileDataUuid;

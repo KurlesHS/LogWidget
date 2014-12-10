@@ -34,9 +34,7 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     itemType->setEditable(false);
     //itemType->setTextAlignment(Qt::AlignRight);
     appendRow(QList<QStandardItem*>() << itemDT << itemType << item);
-    if (!uuid.isEmpty()) {
-        m_hashOfFileItems[uuid] = item;
-    }
+    m_hashOfFileItems[uuid] = item;
 }
 
 void LogModelExtended::addMessage(const QString &text, const int type, const int module)
@@ -225,14 +223,14 @@ QVariant LogModelExtended::data(const QModelIndex &index, int role) const
             break;
         }
     }
-    if (role == Qt::ForegroundRole && index.column() == 1)
+    if (role == Qt::ForegroundRole && index.column() == 2)
     {
         int type = data(index,MsgTypeRole).toInt();
-        if (type == 2)
+        if (type == LOCAL_MSG || type == SEND_MSG || type == RECEIVE_MSG)
             return QBrush(Qt::red);
-        else if (type == 1) {
-            return QBrush(Qt::black);
-        }
+//        else if (type == 1) {
+//            return QBrush(Qt::black);
+//        }
     }
     return QStandardItemModel::data(index, role);
 }

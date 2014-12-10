@@ -86,6 +86,11 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 }
                 painter->save();
 
+                if (index.data(MsgConfirmRole).toBool()){
+                    p.setColor(QPalette::Window, QColor(Qt::red));
+                    painter->fillRect(option.rect, Qt::red);
+                }
+
                 QFontMetrics fm(option.font);
                 int delta = option.rect.height() - fm.height();
                 delta /= 2;
@@ -103,9 +108,8 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                      painter->drawPixmap(x-2,y-3,arrowdown);
                      offset += 40;
                 }
-                if (!timeConfirm.isEmpty()) {
-                //    painter->drawText(option.rect.x()-20,option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
-                   offset += fm.width(timeConfirm);
+                if (!timeConfirm.isEmpty()) {                
+                   offset += fm.width(timeConfirm)+4;
                 }
 
 
@@ -211,6 +215,8 @@ void LogModelData::setPopipWidget() const
     m_popupWidget->setTime(timeConfirm);
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
     m_popupWidget->cleanFiles();
+    if (!listOfFiles.isEmpty())
+        m_popupWidget->setFileInfo();
     for (const QString &file : listOfFiles) {
          m_popupWidget->addFile(file);
     }
@@ -223,6 +229,8 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
     m_popupWidget->setDescription(text);
     //m_popupWidget->setTime(timeConfirm);
     m_popupWidget->cleanFiles();
+    if (!listOfFiles.isEmpty())
+        m_popupWidget->setFileInfo();
    QList<QPushButton*> buttons;
    for (const QString &file : listOfFiles) {
        QPushButton *b = m_popupWidget->addFile(file);
@@ -247,8 +255,7 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
    qDebug() << r << pos;
 
    if (r.contains(pos)) {
-       if (timeConfirm.isEmpty())
-        timeConfirm = getCurrentTime();
+       setConfirm();
        retval = true;
    }
    return retval;
@@ -261,6 +268,26 @@ QString LogModelData::getCurrentTime()
         QString dateTimeString =  dateTime.toString("yyyy.MM.dd hh:mm:ss");
         return dateTimeString;
 
+}
+
+void LogModelData::setConfirm()
+{
+    if (timeConfirm.isEmpty())
+        timeConfirm = getCurrentTime();
+}
+
+bool LogModelData::checkBigMsg(const QStyleOptionViewItem &option)
+{
+    if (!listOfFiles.isEmpty()){
+         return true;
+    }
+    QFontMetrics fm(option.font);
+    int widthText = fm.width(text);
+    if (widthText > option.rect.width()){
+        return true;
+    }
+    setConfirm();
+    return false;
 }
 
 

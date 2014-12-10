@@ -51,7 +51,7 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             mousePoint.setX(mousePoint.x()-localRect.x());
             mousePoint.setY(mousePoint.y()-localRect.y());
             LogModelData data = x.value<LogModelData>();
-            if (data.type == INFO_MESSAGE || event->type() == QEvent::MouseButtonPress)
+            if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
                     if (index.data(MsgShowRole).toBool()) {
                         if (data.checkClickMsg(mousePoint,option)){
                             model->setData(index,false, MsgShowRole);                            
@@ -62,6 +62,12 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                            model->setData(index,true, MsgShowRole);
                        }
                     }
+             else if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonDblClick && index.data(MsgConfirmRole).toBool()){
+                data.checkBigMsg(option);
+                qDebug() << "DblClick";
+                model->setData(index,false,MsgConfirmRole);
+                model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+            }
          }
    }
    retVal = QStyledItemDelegate::editorEvent(event,model,option,index);

@@ -30,6 +30,12 @@ void PopupWidget::setTime(const QString &time)
     ui->label_time->setText(time);
 }
 
+void PopupWidget::setFileInfo()
+{
+     QLabel *lbinfo = new QLabel(trUtf8("Вложенные файлы:"));
+     ui->Layout_file->addWidget(lbinfo);
+}
+
 void PopupWidget::cleanFiles()
 {
     QLayoutItem *child;    
@@ -45,6 +51,11 @@ void PopupWidget::cleanFiles()
 QPushButton *PopupWidget::addFile(const QString &filename)
 {
     if (!filename.isEmpty()){
+//        if (ui->Layout_file->takeAt(0) == 0) {
+//            QLabel *lbinfo = new QLabel(trUtf8("Вложенные файлы:"));
+//            ui->Layout_file->addWidget(lbinfo);
+//        }
+
         QFileInfo fInfo(filename);
         QFileIconProvider FIcon;
         QIcon iFile = FIcon.icon(fInfo);

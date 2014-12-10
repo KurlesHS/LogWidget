@@ -19,6 +19,7 @@ public:
     ~PopupWidget();
     void setDescription(const QString &desc);
     void setTime(const QString &time);
+    void setFileInfo();
     void cleanFiles();
     QPushButton *addFile(const QString &filename);
     QLabel *checkHide();
