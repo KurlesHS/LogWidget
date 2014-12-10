@@ -22,6 +22,7 @@ public:
     void setFileInfo();
     void cleanFiles();
     QPushButton *addFile(const QString &filename);
+    QLabel *addFileLb(const QString &filename);
     QLabel *checkHide();
     void showIconFile(const bool show);
 

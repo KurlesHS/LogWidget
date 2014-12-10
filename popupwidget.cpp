@@ -51,11 +51,6 @@ void PopupWidget::cleanFiles()
 QPushButton *PopupWidget::addFile(const QString &filename)
 {
     if (!filename.isEmpty()){
-//        if (ui->Layout_file->takeAt(0) == 0) {
-//            QLabel *lbinfo = new QLabel(trUtf8("Вложенные файлы:"));
-//            ui->Layout_file->addWidget(lbinfo);
-//        }
-
         QFileInfo fInfo(filename);
         QFileIconProvider FIcon;
         QIcon iFile = FIcon.icon(fInfo);
@@ -66,12 +61,32 @@ QPushButton *PopupWidget::addFile(const QString &filename)
         but->setToolTip(filename);
         but->setText(tmpFile);
         but->setIcon(iFile);
+        but->setStyleSheet("border: 1px solid #8f8f91;"
+                           "border-radius: 6px;"
+                           "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                                       "stop: 0 #f6f7fa, stop: 1 #dadbde);"
+                           "min-width: 80px;");
         but->adjustSize();
         ui->Layout_file->addWidget(but);        
         return but;
     }
     return 0;
 
+}
+
+QLabel *PopupWidget::addFileLb(const QString &filename)
+{
+    if (!filename.isEmpty()){
+        int i = filename.lastIndexOf("/");
+        QString tmpFile = filename;
+        tmpFile.remove(0,i+1);
+        QLabel *lb =new QLabel(tmpFile);
+        lb->setToolTip(filename);
+        lb->adjustSize();
+        ui->Layout_file->addWidget(lb);
+        return lb;
+    }
+    return 0;
 }
 
 QLabel *PopupWidget::checkHide()

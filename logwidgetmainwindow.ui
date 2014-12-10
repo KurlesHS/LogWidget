@@ -24,18 +24,18 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">  
-::item  {
+     <string notr="true">  ::item  {
      border: 1px solid #7f7f7f;
     border-top-color: transparent;
     border-left-color: transparent;
 }
  
-::item:hover  {
+/*::item:hover  {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
     border: 1px solid #bfcde4;
 }
  
+
 ::item:selected  {
     border: 1px solid #567dbc;
 }
@@ -46,11 +46,7 @@
  
 ::item:selected:!active  {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
-}
-
-::item::icon {
-subcontrol-position: center center;
-}</string>
+}*/</string>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
@@ -112,6 +108,13 @@ subcontrol-position: center center;
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #8f8f91;
+     border-radius:6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
+     min-width: 80px;</string>
+          </property>
           <property name="text">
            <string>Add</string>
           </property>
@@ -148,6 +151,9 @@ subcontrol-position: center center;
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_2">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>NewFile</string>
           </property>

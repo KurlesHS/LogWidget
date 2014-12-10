@@ -134,8 +134,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                 }
                 painter->restore();
             } else {                
-                setPopipWidget();                
-                qDebug() << "!!!paint";
+                setPopipWidget();                                
                 m_popupWidget->resize(option.rect.width(),m_popupWidget->height());                                                
                 m_popupWidget->setPalette(p);
                 painter->save();
@@ -219,6 +218,7 @@ void LogModelData::setPopipWidget() const
         m_popupWidget->setFileInfo();
     for (const QString &file : listOfFiles) {
          m_popupWidget->addFile(file);
+
     }
     m_popupWidget->adjustSize();
 }
@@ -232,9 +232,12 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();
    QList<QPushButton*> buttons;
+   // QList<QLabel*> labels;
    for (const QString &file : listOfFiles) {
        QPushButton *b = m_popupWidget->addFile(file);
+       //QLabel *b = m_popupWidget->addFileLb(file);
        buttons.append(b);
+       //labels.append(b);
    }
    //QLabel *lb_hide = m_popupWidget->checkHide();   
    m_popupWidget->adjustSize();
@@ -249,10 +252,23 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
        break;
        }
    }
+
+//   for (int i = 0; i <labels.size(); ++i) {
+//    QRect r(labels.at(i)->mapToParent(QPoint(0, 0)), labels.at(i)->size());
+//    qDebug() << r << pos;
+//    //проверка попадание курсора в кнопку на виджете
+//       if (r.contains(pos)) {
+//       QString file ("file:///"+listOfFiles.at(i));
+//       QDesktopServices::openUrl(file);
+//       break;
+//       }
+//   }
+
+
    QLabel *lb_hide = m_popupWidget->checkHide();
    //QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
    QRect r(QPoint(m_popupWidget->width()-16,m_popupWidget->height()-16),lb_hide->size());
-   qDebug() << r << pos;
+
 
    if (r.contains(pos)) {
        setConfirm();
