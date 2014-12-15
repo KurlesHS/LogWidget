@@ -88,7 +88,10 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
                 if (index.data(MsgConfirmRole).toBool()){
                     p.setColor(QPalette::Window, QColor(Qt::red));
-                    painter->fillRect(option.rect, Qt::red);
+                    QRect tmpRect = option.rect;
+                    tmpRect.setHeight(tmpRect.height()-1);
+                    tmpRect.setWidth(tmpRect.width()-1);
+                    painter->fillRect(tmpRect, Qt::red);
                 }
 
                 QFontMetrics fm(option.font);
@@ -271,7 +274,7 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
 
 
    if (r.contains(pos)) {
-       setConfirm();
+       //setConfirm();
        retval = true;
    }
    return retval;

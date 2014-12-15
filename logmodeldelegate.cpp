@@ -55,12 +55,15 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                     if (index.data(MsgShowRole).toBool()) {                       
                             if (data.checkClickMsg(mousePoint,option)){
                                 model->setData(index,false, MsgShowRole);
-                                model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
                             }
                     } else {
                        if (option.rect.width()-mousePoint.x()<20){
-                            if (data.checkBigMsg(option))
+                            if (data.checkBigMsg(option)){
+                                data.setConfirm();
                                 model->setData(index,true, MsgShowRole);
+                                model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                            }
                        }
                     }
              else if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonDblClick && index.data(MsgConfirmRole).toBool()){
