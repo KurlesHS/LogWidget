@@ -128,6 +128,6 @@ void LogWidgetMainWindow::on_pushButton_2_clicked()
 
 void LogWidgetMainWindow::on_pushButton_clicked()
 {
-    m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,nullptr);
+    m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,nullptr,ui->confirm->checkState());
    // ui->lineEditPopup->setText("");
 }

@@ -30,7 +30,7 @@
     border-left-color: transparent;
 }
  
-/*::item:hover  {
+::item:hover  {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
     border: 1px solid #bfcde4;
 }
@@ -46,7 +46,7 @@
  
 ::item:selected:!active  {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
-}*/</string>
+}</string>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
@@ -55,7 +55,7 @@
      <bool>false</bool>
     </property>
     <attribute name="headerVisible">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="headerHighlightSections">
      <bool>true</bool>
@@ -120,6 +120,13 @@
           </property>
           <property name="flat">
            <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="confirm">
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

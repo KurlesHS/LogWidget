@@ -302,7 +302,7 @@ bool LogModelData::checkBigMsg(const QStyleOptionViewItem &option)
     if (widthText > option.rect.width()){
         return true;
     }
-    setConfirm();
+    //setConfirm();
     return false;
 }
 

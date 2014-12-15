@@ -21,9 +21,9 @@ void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         LogModelData data = x.value<LogModelData>();
         data.paint(painter, option, index);
     }
-//    else {
-//        QStyledItemDelegate::paint(painter, option, index);
-//    }
+    else {
+        QStyledItemDelegate::paint(painter, option, index);
+    }
 }
 
 QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -52,21 +52,24 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             mousePoint.setY(mousePoint.y()-localRect.y());
             LogModelData data = x.value<LogModelData>();
             if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
-                    if (index.data(MsgShowRole).toBool()) {
-                        if (data.checkClickMsg(mousePoint,option)){
-                            model->setData(index,false, MsgShowRole);                            
-                            model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
-                        }
+                    if (index.data(MsgShowRole).toBool()) {                       
+                            if (data.checkClickMsg(mousePoint,option)){
+                                model->setData(index,false, MsgShowRole);
+                                model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                            }
                     } else {
                        if (option.rect.width()-mousePoint.x()<20){
-                           model->setData(index,true, MsgShowRole);
+                            if (data.checkBigMsg(option))
+                                model->setData(index,true, MsgShowRole);
                        }
                     }
              else if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonDblClick && index.data(MsgConfirmRole).toBool()){
-                data.checkBigMsg(option);
+                if (!data.checkBigMsg(option)) {
+                    data.setConfirm();
                 qDebug() << "DblClick";
                 model->setData(index,false,MsgConfirmRole);
                 model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                }
             }
          }
    }
