@@ -32,7 +32,7 @@ class LogModelData
 public:
     LogModelData();
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
-    QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index, const int width) const;
 
     //void checkDblClickFile(const QPoint &pos);
     bool checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option);
@@ -54,7 +54,7 @@ private:
     //static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
     //void setFileLogWidget() const;
-    void setPopipWidget() const;
+    void setPopipWidget(const QFont font) const;
 
 
 };

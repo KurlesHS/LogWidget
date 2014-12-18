@@ -32,7 +32,7 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
     QVariant x = index.data(LogDataRole);
     if (x.canConvert<LogModelData>()){
         LogModelData data = x.value<LogModelData>();
-        size = data.sizeHint(option, index);        
+        size = data.sizeHint(option, index, itemWidth);
     } else {
         size = QStyledItemDelegate::sizeHint(option, index);                
     }        
@@ -53,10 +53,10 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             LogModelData data = x.value<LogModelData>();
             if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
                     if (index.data(MsgShowRole).toBool()) {                       
-                            if (data.checkClickMsg(mousePoint,option)){
-                                model->setData(index,false, MsgShowRole);
-                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
-                            }
+//                            if (data.checkClickMsg(mousePoint,option)){
+//                                model->setData(index,false, MsgShowRole);
+//                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+//                            }
                     } else {
                        if (option.rect.width()-mousePoint.x()<20){
                             if (data.checkBigMsg(option)){
@@ -79,3 +79,13 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
    retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
    return retVal;
 }
+int LogModelDelegate::getItemWidth() const
+{
+    return itemWidth;
+}
+
+void LogModelDelegate::setItemWidth(int value)
+{
+    itemWidth = value;
+}
+

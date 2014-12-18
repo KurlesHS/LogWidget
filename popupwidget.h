@@ -20,14 +20,19 @@ public:
     void setDescription(const QString &desc);
     void setTime(const QString &time);
     void setFileInfo();
-    void cleanFiles();
+    int cleanFiles();
     QPushButton *addFile(const QString &filename);
     QLabel *addFileLb(const QString &filename);
     QLabel *checkHide();
     void showIconFile(const bool show);
+    int getHeightFile();
+
+    int getFileHeight() const;
+    void setFileHeight(int value);
 
 private:
     Ui::PopupWidget *ui;
+    int fileHeight = 0;
 };
 
 #endif // POPUPWIDGET_H

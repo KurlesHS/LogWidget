@@ -5,6 +5,7 @@
 #include <QModelIndex>
 
 class LogModelExtended;
+class LogModelDelegate;
 
 namespace Ui {
 class LogWidgetMainWindow;
@@ -19,6 +20,10 @@ public:
     ~LogWidgetMainWindow();
 
 private slots:
+    virtual void resizeEvent (QResizeEvent * event);
+
+    virtual bool eventFilter( QObject* obj, QEvent* e );
+
     void on_toolButtonSelectFile_clicked();
 
     void on_pushButtonAddSimpleText_clicked();
@@ -31,11 +36,13 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void init();
 private:
     Ui::LogWidgetMainWindow *ui;
     LogModelExtended *m_model;
     QTimer *m_timer;
     QString LogUUID;
+    LogModelDelegate *mDelegate;
 };
 
 #endif // LOGWIDGETMAINWINDOW_H

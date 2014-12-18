@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QPushButton>
 #include <QDebug>
+#include <math.h>
 
 PopupWidget::PopupWidget(QWidget *parent):
     QWidget(parent),
@@ -21,7 +22,7 @@ PopupWidget::~PopupWidget()
 
 void PopupWidget::setDescription(const QString &desc)
 {
-    ui->label_desc->setText(desc);
+    ui->label_desc->setText(desc);    
     //ui->label_desc->setWordWrap(true);
 }
 
@@ -33,10 +34,11 @@ void PopupWidget::setTime(const QString &time)
 void PopupWidget::setFileInfo()
 {
      QLabel *lbinfo = new QLabel(trUtf8("Вложенные файлы:"));
+     fileHeight += lbinfo->height();
      ui->Layout_file->addWidget(lbinfo);
 }
 
-void PopupWidget::cleanFiles()
+int PopupWidget::cleanFiles()
 {
     QLayoutItem *child;    
     while ((child = ui->Layout_file->takeAt(0)) != 0) {
@@ -45,7 +47,11 @@ void PopupWidget::cleanFiles()
             }
             delete child;
     }
+    ui->label_desc->setText("1");
+    fileHeight = 0;
     this->adjustSize();
+    //qDebug() << "Clean widget " << this->height() << ui->horizontalLayout->itemAt(0)->sizeHint().height() << ui->horizontalLayout->itemAt(1)->sizeHint().height();
+    return this->height()-ui->horizontalLayout->itemAt(0)->sizeHint().height()-ui->horizontalLayout->itemAt(1)->sizeHint().height();
 }
 
 QPushButton *PopupWidget::addFile(const QString &filename)
@@ -67,7 +73,9 @@ QPushButton *PopupWidget::addFile(const QString &filename)
                                        "stop: 0 #f6f7fa, stop: 1 #dadbde);"
                            "min-width: 80px;");
         but->adjustSize();
+        fileHeight += but->height();
         ui->Layout_file->addWidget(but);        
+        //qDebug() << "Clean widget " << ui->horizontalLayout->itemAt(1)->geometry().height();
         return but;
     }
     return 0;
@@ -97,8 +105,25 @@ QLabel *PopupWidget::checkHide()
 
 void PopupWidget::showIconFile(const bool show)
 {
-        ui->lb_file->setHidden(show);
+    ui->lb_file->setHidden(show);
 }
+
+int PopupWidget::getHeightFile()
+{
+    this->adjustSize();
+    //qDebug() << ui->Layout_file->sizeHint();
+    return ui->horizontalLayout->itemAt(1)->sizeHint().height();
+}
+int PopupWidget::getFileHeight() const
+{
+    return fileHeight;
+}
+
+void PopupWidget::setFileHeight(int value)
+{
+    fileHeight = value;
+}
+
 
 
 

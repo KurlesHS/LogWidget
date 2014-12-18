@@ -12,6 +12,13 @@ public:
 
     bool editorEvent(QEvent *event, QAbstractItemModel *model,
                      const QStyleOptionViewItem &option, const QModelIndex &index);
+
+    int getItemWidth() const;
+    void setItemWidth(int value);
+
+private:
+    int itemWidth;
+
 };
 
 #endif // LOGMODELDELEGATE_H

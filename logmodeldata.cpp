@@ -136,8 +136,9 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                     painter->drawText(option.rect.x()-offset+fm.width(timeConfirm),option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 }
                 painter->restore();
-            } else {                
-                setPopipWidget();                                
+            } else {
+                QFont itemFont = option.font;
+                setPopipWidget(itemFont);
                 m_popupWidget->resize(option.rect.width(),m_popupWidget->height());                                                
                 m_popupWidget->setPalette(p);
                 painter->save();
@@ -149,7 +150,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
 }
 
-QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index, const int width) const
 {       
     Q_UNUSED(option)
     Q_UNUSED(index)
@@ -171,8 +172,11 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
             int width = fm.width(text);
             int height = fm.height() + 6;
             retVal = QSize(width, height);
-        } else {            
-            setPopipWidget();
+        } else {
+            qDebug() << " sizeHint" << width;
+            m_popupWidget->resize(width,m_popupWidget->height());
+            QFont itemFont = option.font;
+            setPopipWidget(itemFont);
             retVal = m_popupWidget->size();                        
         }
     }    
@@ -211,27 +215,34 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 //    m_fileLogWidget->adjustSize();
 //}
 
-void LogModelData::setPopipWidget() const
+void LogModelData::setPopipWidget(const QFont font) const
 {
-    m_popupWidget->setDescription(text);
+    int width = m_popupWidget->width();
+    int offset = m_popupWidget->cleanFiles();
     m_popupWidget->setTime(timeConfirm);
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
-    m_popupWidget->cleanFiles();
     if (!listOfFiles.isEmpty())
-        m_popupWidget->setFileInfo();
+        m_popupWidget->setFileInfo();    
     for (const QString &file : listOfFiles) {
          m_popupWidget->addFile(file);
+    }    
+    m_popupWidget->setDescription(text);
 
-    }
-    m_popupWidget->adjustSize();
+    QFontMetrics fm(font);
+    QRect r = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,text);
+
+    int hFile = m_popupWidget->getHeightFile();
+    int fileHeight = m_popupWidget->getFileHeight();
+    qDebug() << width << r.height() << hFile << offset << fileHeight;
+
+    m_popupWidget->resize(width,r.height()+hFile+10);
+    //m_popupWidget->adjustSize();
 }
 
 bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option)
 {    
     bool retval = false;
-    m_popupWidget->setDescription(text);
-    //m_popupWidget->setTime(timeConfirm);
-    m_popupWidget->cleanFiles();
+    int offset = m_popupWidget->cleanFiles();
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();
    QList<QPushButton*> buttons;
@@ -242,10 +253,16 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
        buttons.append(b);
        //labels.append(b);
    }
-   //QLabel *lb_hide = m_popupWidget->checkHide();   
-   m_popupWidget->adjustSize();
-   m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
-   m_popupWidget->updateGeometry();
+
+   QFontMetrics fm(option.font);
+   QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(option.rect.width(),100)),Qt::TextWordWrap,text);
+   int hFile = m_popupWidget->getHeightFile();
+   m_popupWidget->resize(option.rect.width(),textRect.height()+hFile+offset);
+
+   //QLabel *lb_hide = m_popupWidget->checkHide();
+   //m_popupWidget->adjustSize();
+   //m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
+   //m_popupWidget->updateGeometry();
    for (int i = 0; i <buttons.size(); ++i) {
     QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
     //проверка попадание курсора в кнопку на виджете
@@ -306,7 +323,8 @@ bool LogModelData::checkBigMsg(const QStyleOptionViewItem &option)
         return true;
     }
     //setConfirm();
-    return false;
+    //return false;
+    return true;
 }
 
 

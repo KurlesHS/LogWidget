@@ -8,6 +8,7 @@
 #include <QUuid>
 #include <QTimer>
 #include <QDebug>
+#include <QObject>
 
 
 LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
@@ -20,7 +21,9 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     connect(m_timer, SIGNAL(timeout()),
             this, SLOT(onTimer()));
     ui->setupUi(this);
-    LogModelDelegate *mDelegate = new LogModelDelegate(this);
+    ui->treeView->installEventFilter(this);
+
+    mDelegate = new LogModelDelegate(this);
     //ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
     //ui->treeView->setItemDelegateForColumn(1, new LogModelDelegate(this));
     m_model->setColumnCount(3);
@@ -32,6 +35,9 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(0,112);
     ui->treeView->setColumnWidth(1,27);
 
+    //mDelegate->setItemWidth(ui->treeView->columnWidth(2));
+
+     QTimer::singleShot(200, this, SLOT(init()));
 //    ui->tableView->setItemDelegate(mDelegate);
 //    ui->tableView->setModel(m_model);
 
@@ -53,6 +59,26 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
 LogWidgetMainWindow::~LogWidgetMainWindow()
 {
     delete ui;
+}
+
+void LogWidgetMainWindow::init(){
+    mDelegate->setItemWidth(ui->treeView->columnWidth(2));
+}
+
+void LogWidgetMainWindow::resizeEvent(QResizeEvent *event)
+{
+    mDelegate->setItemWidth(ui->treeView->columnWidth(2));
+    return QWidget::resizeEvent(event);
+}
+
+bool LogWidgetMainWindow::eventFilter(QObject *obj, QEvent *e)
+{
+    if (obj->objectName() == "treeView")
+       if ( e->type() == QEvent::Resize ) {
+           QEvent e( QEvent::StyleChange );
+           qApp->sendEvent( obj, &e );
+       }
+    return QObject::eventFilter( obj, e );
 }
 
 
