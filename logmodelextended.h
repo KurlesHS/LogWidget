@@ -4,6 +4,8 @@
 #include <QStandardItemModel>
 #include <QHash>
 
+#define COLUMN_MESSAGE 2
+
 class LogModelExtended : public QStandardItemModel
 {
     Q_OBJECT

@@ -1,6 +1,5 @@
 #include "logmodeldata.h"
 #include <QLabel>
-#include "filelogwidget.h"
 #include "popupwidget.h"
 #include <QPainter>
 #include <QDebug>
@@ -10,14 +9,11 @@
 #include <QDateTime>
 
 
-//FileLogWidget *LogModelData::m_fileLogWidget = nullptr;
 PopupWidget *LogModelData::m_popupWidget = nullptr;
 
 LogModelData::LogModelData()
 {   
-//   if (m_fileLogWidget == nullptr){
-//        m_fileLogWidget = new FileLogWidget();
-//    }
+
    if (m_popupWidget == nullptr){
         m_popupWidget = new PopupWidget();
     }
@@ -40,41 +36,12 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         int delta = option.rect.height() - fm.height();
         delta /= 2;
         painter->translate(2, delta);
-        //qDebug() << fm.width(text) << option.rect;
-        if (fm.width(text) > option.rect.width()){
-            QRect rect = option.rect;
-            //отрисовываем текст сообщения
-            rect.setWidth(rect.width()-20);
-            painter->drawText(rect,Qt::TextSingleLine,text);
-            rect.setX(option.rect.x()+option.rect.width()-18);
-            rect.setWidth(20);
-            painter->drawText(rect,"...");
-        } else {
-            painter->drawText(option.rect, text);
-        }
+
+        //Вычислаем длину сообщения и отрисовываем его
+        QString tmpText = fm.elidedText(text,Qt::ElideRight,option.rect.width());
+        painter->drawText(option.rect,Qt::TextSingleLine,tmpText);
+
         painter->restore();
-//    } else if(type == INCOMING_FILE) {
-//        setFileLogWidget();
-//        m_fileLogWidget->setPalette(p);
-//        painter->save();
-//        painter->translate(option.rect.x(), option.rect.y());
-//        m_fileLogWidget->render(painter);
-//        painter->restore();
-//    } else if(type == POPUP_TEXT) {
-//        setPopipWidget();
-//        m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
-//        m_popupWidget->setPalette(p);
-//        if (timeConfirm.isEmpty()){
-//            bool x = index.data(MsgFlashRole).toBool();
-//            Qt::GlobalColor c = x ?
-//                        Qt::red : Qt::transparent;
-//            p.setColor(QPalette::Window, QColor(c));
-//            painter->fillRect(option.rect, c);
-//        }
-//        painter->save();
-//        painter->translate(option.rect.x(), option.rect.y());
-//        m_popupWidget->render(painter);
-//        painter->restore();
       } else if (type == INFO_MESSAGE) {
             if (!index.data(MsgShowRole).toBool()){
                 if (timeConfirm.isEmpty()){
@@ -172,9 +139,6 @@ void LogModelData::setPopipWidget(const QFont font) const
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();    
-//    for (const QString &file : listOfFiles) {
-//         m_popupWidget->addFile(file);
-//    }
 
     for (const QString &file : listOfFiles) {
         m_popupWidget->addFileLb(file);
@@ -196,11 +160,6 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
     m_popupWidget->cleanFiles();
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();
-//   QList<QPushButton*> buttons;
-//   for (const QString &file : listOfFiles) {
-//       QPushButton *b = m_popupWidget->addFile(file);
-//       buttons.append(b);
-//   }
 
    QList<QLabel*> labels;
    for (const QString &file : listOfFiles) {
@@ -215,21 +174,6 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
    int fileHeight = m_popupWidget->getFileHeight();
    m_popupWidget->adjustSize();
    m_popupWidget->resize(option.rect.width(),textRect.height()+fileHeight);
-
-   //QLabel *lb_hide = m_popupWidget->checkHide();
-   //m_popupWidget->adjustSize();
-   //m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
-   //m_popupWidget->updateGeometry();
-//   for (int i = 0; i <buttons.size(); ++i) {
-//    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
-//    qDebug() << r << pos ;
-//    //проверка попадание курсора в кнопку на виджете
-//       if (r.contains(pos)) {
-//       QString file ("file:///"+listOfFiles.at(i));
-//       QDesktopServices::openUrl(file);
-//       break;
-//       }
-//   }
 
    for (int i = 0; i <labels.size(); ++i) {
     QRect r(labels.at(i)->mapToParent(QPoint(0, 0)), labels.at(i)->size());

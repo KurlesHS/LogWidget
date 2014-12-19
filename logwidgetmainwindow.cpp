@@ -24,8 +24,7 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui->treeView->installEventFilter(this);
 
     mDelegate = new LogModelDelegate(this);
-    //ui->treeView->setItemDelegateForColumn(0, new LogModelDelegate(this));
-    //ui->treeView->setItemDelegateForColumn(1, new LogModelDelegate(this));
+
     m_model->setColumnCount(3);
     m_model->setHorizontalHeaderItem(0,new QStandardItem(trUtf8("Время")));
     m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Тип")));
@@ -35,25 +34,8 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui->treeView->setColumnWidth(0,112);
     ui->treeView->setColumnWidth(1,27);
 
-    //mDelegate->setItemWidth(ui->treeView->columnWidth(2));
-
      QTimer::singleShot(200, this, SLOT(init()));
-//    ui->tableView->setItemDelegate(mDelegate);
-//    ui->tableView->setModel(m_model);
 
-//    ui->tableView->verticalHeader()->setVisible(false);
-//    ui->tableView->verticalHeader()->setDefaultSectionSize(18);
-//    //ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-//    ui->tableView->setColumnWidth(0,110);
-//    ui->tableView->horizontalHeader()->setStretchLastSection(true);
-
-
-    //ui->tableView->verticalHeader()->setMinimumHeight(22);
-    //ui->tableView->verticalHeader()->setMaximumHeight(22);
-//    for (int i = 0; i < 10000; ++i) {
-//        m_model->addFileRow(QUuid::createUuid().toString(), "");
-//        m_model->addSimpleText(QString("row: %0").arg(i * 2 + 1));
-//    }
 }
 
 LogWidgetMainWindow::~LogWidgetMainWindow()
@@ -62,12 +44,12 @@ LogWidgetMainWindow::~LogWidgetMainWindow()
 }
 
 void LogWidgetMainWindow::init(){
-    mDelegate->setItemWidth(ui->treeView->columnWidth(2));
+    mDelegate->setItemWidth(ui->treeView->columnWidth(COLUMN_MESSAGE));
 }
 
 void LogWidgetMainWindow::resizeEvent(QResizeEvent *event)
 {
-    mDelegate->setItemWidth(ui->treeView->columnWidth(2));
+    mDelegate->setItemWidth(ui->treeView->columnWidth(COLUMN_MESSAGE));
     return QWidget::resizeEvent(event);
 }
 
@@ -136,20 +118,6 @@ void LogWidgetMainWindow::on_pushButton_2_clicked()
         ui->lineEditFileName->setText("");
     }
 }
-
-//void LogWidgetMainWindow::on_treeView_doubleClicked(const QModelIndex &index)
-//{
-////    if (!index.data(MsgShowRole).toBool())
-////        m_model->clickPopup(index);
-
-//}
-
-
-//void LogWidgetMainWindow::on_pushButton_3_clicked()
-//{
-//    m_model->addOpenMsg(ui->lineEditOpenMsg->text(),ui->lineEditFileName->text());
-//    //ui->lineEditOpenMsg->setText("");
-//}
 
 
 void LogWidgetMainWindow::on_pushButton_clicked()

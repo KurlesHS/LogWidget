@@ -28,7 +28,6 @@ HEADERS  += logwidgetmainwindow.h \
     popupwidget.h
 
 FORMS    += logwidgetmainwindow.ui \
-    filelogwidget.ui \
     popupwidget.ui
 
 RESOURCES += \

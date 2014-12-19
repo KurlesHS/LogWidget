@@ -23,7 +23,6 @@ PopupWidget::~PopupWidget()
 void PopupWidget::setDescription(const QString &desc)
 {
     ui->label_desc->setText(desc);    
-    //ui->label_desc->setWordWrap(true);
 }
 
 void PopupWidget::setTime(const QString &time)
@@ -110,11 +109,7 @@ void PopupWidget::showIconFile(const bool show)
 
 int PopupWidget::getFileHeight() const
 {
-//    int *left;
-//    int *top;
-//    int *right;
-//    int *bottom;
-//    ui->gridLayout->getContentsMargins(left,top,right,bottom);
+
     int retVal;
     if (fileHeight == 0){
         retVal = 20;

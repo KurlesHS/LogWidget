@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <Qt>
+#include <QBrush>
 
 #include "logmodeldata.h"
 
@@ -25,14 +26,18 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     item->setData(QVariant::fromValue<LogModelData>(data));
     item->setEditable(false);
     item->setData(false,MsgShowRole);
-    item->setData(confirm,MsgConfirmRole);
+    item->setData(confirm,MsgConfirmRole);   
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
     auto itemDT = new QStandardItem(data.time);
     itemDT->setEditable(false);        
     auto itemType = new QStandardItem();
     itemType->setData(data.typeMsg,MsgTypeRole);
     itemType->setEditable(false);
-    //itemType->setTextAlignment(Qt::AlignRight);
+    if (confirm) {
+        item->setBackground(Qt::red);
+        itemDT->setBackground(Qt::red);
+        itemType->setBackground(Qt::red);
+    }
     appendRow(QList<QStandardItem*>() << itemDT << itemType << item);
     m_hashOfFileItems[uuid] = item;
 }
@@ -223,7 +228,7 @@ QVariant LogModelExtended::data(const QModelIndex &index, int role) const
             break;
         }
     }
-    if (role == Qt::ForegroundRole && index.column() == 2)
+    if (role == Qt::ForegroundRole)
     {
         int type = data(index,MsgTypeRole).toInt();
         if (type == LOCAL_MSG || type == SEND_MSG || type == RECEIVE_MSG)

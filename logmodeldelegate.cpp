@@ -1,6 +1,5 @@
 #include "logmodeldelegate.h"
 #include "logmodeldata.h"
-#include "filelogwidget.h"
 #include "logmodelextended.h"
 #include <QPainter>
 #include <QDebug>
@@ -55,7 +54,6 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                     if (index.data(MsgShowRole).toBool()) {                       
                             if (data.checkClickMsg(mousePoint,option)){
                                 model->setData(index,false, MsgShowRole);
-                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
                             }
                     } else {
                        if (option.rect.width()-mousePoint.x()<20){

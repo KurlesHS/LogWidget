@@ -5,7 +5,6 @@
 #include <QMetaType>
 #include <QStringList>
 #include <QStyleOptionViewItem>
-#include "filelogwidget.h"
 #include "popupwidget.h"
 
 #define INFO_MESSAGE 0
