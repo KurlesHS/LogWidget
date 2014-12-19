@@ -51,8 +51,6 @@ void PopupWidget::cleanFiles()
     ui->label_desc->setText("1");
     fileHeight = 0;
     this->adjustSize();
-    //qDebug() << "Clean widget " << this->height() << ui->horizontalLayout->itemAt(0)->sizeHint().height() << ui->horizontalLayout->itemAt(1)->sizeHint().height();
-    //return this->height()-ui->horizontalLayout->itemAt(0)->sizeHint().height()-ui->horizontalLayout->itemAt(1)->sizeHint().height();
 }
 
 QPushButton *PopupWidget::addFile(const QString &filename)
@@ -76,7 +74,6 @@ QPushButton *PopupWidget::addFile(const QString &filename)
         but->adjustSize();        
         fileHeight += ui->Layout_file->layout()->spacing()+but->size().height();
         ui->Layout_file->addWidget(but);
-        //qDebug() << "Clean widget " << ui->horizontalLayout->itemAt(1)->geometry().height();
         return but;
     }
     return 0;
@@ -91,7 +88,9 @@ QLabel *PopupWidget::addFileLb(const QString &filename)
         tmpFile.remove(0,i+1);
         QLabel *lb =new QLabel(tmpFile);
         lb->setToolTip(filename);
+        lb->setStyleSheet("text-decoration: underline;");
         lb->adjustSize();
+        fileHeight += ui->Layout_file->layout()->spacing()+lb->size().height();
         ui->Layout_file->addWidget(lb);
         return lb;
     }
@@ -109,12 +108,6 @@ void PopupWidget::showIconFile(const bool show)
     ui->lb_file->setHidden(show);
 }
 
-int PopupWidget::getHeightFile()
-{
-    this->adjustSize();
-    //qDebug() << ui->Layout_file->sizeHint();
-    return ui->horizontalLayout->itemAt(1)->sizeHint().height();
-}
 int PopupWidget::getFileHeight() const
 {
 //    int *left;

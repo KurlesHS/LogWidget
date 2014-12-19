@@ -54,8 +54,13 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <underline>false</underline>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 85, 255);</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>TextLabel</string>
@@ -79,6 +84,9 @@
           <number>6</number>
          </property>
          <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="bottomMargin">
           <number>2</number>
          </property>
         </layout>
@@ -111,7 +119,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 85, 127);</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>TextLabel</string>

@@ -25,7 +25,6 @@ public:
     QLabel *addFileLb(const QString &filename);
     QLabel *checkHide();
     void showIconFile(const bool show);
-    int getHeightFile();
 
     int getFileHeight() const;
     void setFileHeight(int value);

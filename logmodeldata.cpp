@@ -40,7 +40,7 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         int delta = option.rect.height() - fm.height();
         delta /= 2;
         painter->translate(2, delta);
-        qDebug() << fm.width(text) << option.rect;
+        //qDebug() << fm.width(text) << option.rect;
         if (fm.width(text) > option.rect.width()){
             QRect rect = option.rect;
             //отрисовываем текст сообщения
@@ -115,23 +115,11 @@ void LogModelData::paint(QPainter *painter, const QStyleOptionViewItem &option, 
                    offset += fm.width(timeConfirm)+4;
                 }
 
+                //Вычислаем длину сообщения и отрисовываем его
+                QString tmpText = fm.elidedText(text,Qt::ElideRight,option.rect.width()-offset);
+                painter->drawText(option.rect,Qt::TextSingleLine,tmpText);
 
-                int widthText = fm.width(text);
-                if (widthText > option.rect.width()-offset){
-                    if (listOfFiles.isEmpty()) {
-                        painter->drawPixmap(x-2,y-3,arrowdown);
-                        offset += 20;
-                    }
-                    QRect rect = option.rect;
-                    //отрисовываем текст сообщения
-                    rect.setWidth(rect.width()-20-offset);
-                    painter->drawText(rect,Qt::TextSingleLine,text);
-                    rect.setX(option.rect.x()+option.rect.width()-18-offset);
-                    rect.setWidth(20);
-                    painter->drawText(rect,"...");
-                } else {
-                       painter->drawText(option.rect.x(),option.rect.y(),option.rect.width()-offset,option.rect.height(),Qt::TextSingleLine,text);
-                }
+                //если необходимо выводим дату подтверждения
                 if (!timeConfirm.isEmpty()) {
                     painter->drawText(option.rect.x()-offset+fm.width(timeConfirm),option.rect.y(),option.rect.width(),option.rect.height(),Qt::AlignRight,timeConfirm);
                 }
@@ -160,20 +148,13 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
         int width = fm.width(text);
         int height = fm.height() + 6;
         retVal = QSize(width, height);        
-//    } else if(type == INCOMING_FILE) {
-//        setFileLogWidget();
-//        retVal = m_fileLogWidget->size();
-//    } else if (type == POPUP_TEXT) {
-//        setPopipWidget();
-//        retVal = m_popupWidget->size();
     } else if (type == INFO_MESSAGE) {
         if (!index.data(MsgShowRole).toBool()){
             QFontMetrics fm(option.font);
             int width = fm.width(text);
             int height = fm.height() + 6;
             retVal = QSize(width, height);
-        } else {
-            //qDebug() << " sizeHint" << width;
+        } else {            
             m_popupWidget->resize(width,m_popupWidget->height());
             QFont itemFont = option.font;
             setPopipWidget(itemFont);
@@ -183,38 +164,6 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     return retVal;
 }
 
-//void LogModelData::checkDblClickFile(const QPoint &pos)
-//{
-//   m_fileLogWidget->setDescription(text);
-//   m_fileLogWidget->cleanFiles();
-//   QList<QPushButton*> buttons;
-//   for (const QString &file : listOfFiles) {
-//       QPushButton *b = m_fileLogWidget->addFile(file);
-//       buttons.append(b);
-//   }
-//   m_fileLogWidget->adjustSize();
-//   for (int i = 0; i <buttons.size(); ++i) {
-//    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
-//    //проверка попадание курсора в кнопку на виджете
-//       if (r.contains(pos)) {
-//       QString file ("file:///"+listOfFiles.at(i));
-//       QDesktopServices::openUrl(file);
-//       break;
-//       }
-//   }
-
-//}
-
-//void LogModelData::setFileLogWidget() const
-//{
-//    m_fileLogWidget->setDescription(text);
-//    m_fileLogWidget->cleanFiles();
-//    for (const QString &file : listOfFiles) {
-//         m_fileLogWidget->addFile(file);
-//    }
-//    m_fileLogWidget->adjustSize();
-//}
-
 void LogModelData::setPopipWidget(const QFont font) const
 {
     int width = m_popupWidget->width();
@@ -223,19 +172,22 @@ void LogModelData::setPopipWidget(const QFont font) const
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();    
+//    for (const QString &file : listOfFiles) {
+//         m_popupWidget->addFile(file);
+//    }
+
     for (const QString &file : listOfFiles) {
-         m_popupWidget->addFile(file);
-    }    
+        m_popupWidget->addFileLb(file);
+    }
+
     m_popupWidget->setDescription(text);
 
     QFontMetrics fm(font);
     QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,text);
-
     int fileHeight = m_popupWidget->getFileHeight();
-   // qDebug() << "Text" << r.height()<< "File" << fileHeight;
+
     m_popupWidget->adjustSize();
     m_popupWidget->resize(width,textRect.height()+fileHeight);
-    //m_popupWidget->adjustSize();
 }
 
 bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option)
@@ -244,14 +196,18 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
     m_popupWidget->cleanFiles();
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();
-   QList<QPushButton*> buttons;
-   // QList<QLabel*> labels;
+//   QList<QPushButton*> buttons;
+//   for (const QString &file : listOfFiles) {
+//       QPushButton *b = m_popupWidget->addFile(file);
+//       buttons.append(b);
+//   }
+
+   QList<QLabel*> labels;
    for (const QString &file : listOfFiles) {
-       QPushButton *b = m_popupWidget->addFile(file);
-       //QLabel *b = m_popupWidget->addFileLb(file);
-       buttons.append(b);
-       //labels.append(b);
+       QLabel *b = m_popupWidget->addFileLb(file);
+       labels.append(b);
    }
+
 
    QFontMetrics fm(option.font);
    QRect textRect= fm.boundingRect(QRect(QPoint(0,0),QPoint(option.rect.width(),100)),Qt::TextWordWrap,text);
@@ -264,20 +220,9 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
    //m_popupWidget->adjustSize();
    //m_popupWidget->resize(option.rect.width(),m_popupWidget->height());
    //m_popupWidget->updateGeometry();
-   for (int i = 0; i <buttons.size(); ++i) {
-    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
-    qDebug() << r << pos ;
-    //проверка попадание курсора в кнопку на виджете
-       if (r.contains(pos)) {
-       QString file ("file:///"+listOfFiles.at(i));
-       QDesktopServices::openUrl(file);
-       break;
-       }
-   }
-
-//   for (int i = 0; i <labels.size(); ++i) {
-//    QRect r(labels.at(i)->mapToParent(QPoint(0, 0)), labels.at(i)->size());
-//    qDebug() << r << pos;
+//   for (int i = 0; i <buttons.size(); ++i) {
+//    QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
+//    qDebug() << r << pos ;
 //    //проверка попадание курсора в кнопку на виджете
 //       if (r.contains(pos)) {
 //       QString file ("file:///"+listOfFiles.at(i));
@@ -286,14 +231,22 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
 //       }
 //   }
 
+   for (int i = 0; i <labels.size(); ++i) {
+    QRect r(labels.at(i)->mapToParent(QPoint(0, 0)), labels.at(i)->size());
+    qDebug() << r << pos;
+    //проверка попадание курсора в кнопку на виджете
+       if (r.contains(pos)) {
+       QString file ("file:///"+listOfFiles.at(i));
+       QDesktopServices::openUrl(file);
+       break;
+       }
+   }
+
 
    QLabel *lb_hide = m_popupWidget->checkHide();
-   //QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
-   QRect r(QPoint(m_popupWidget->width()-16,m_popupWidget->height()-16),lb_hide->size());
-
-
-   if (r.contains(pos)) {
-       //setConfirm();
+   QRect r(lb_hide->mapToParent(QPoint(0, 0)), lb_hide->size());
+   //QRect r(QPoint(m_popupWidget->width()-16,m_popupWidget->height()-16),lb_hide->size());
+   if (r.contains(pos)) {      
        retval = true;
    }
    return retval;
@@ -325,8 +278,7 @@ bool LogModelData::checkBigMsg(const QStyleOptionViewItem &option)
         return true;
     }
     //setConfirm();
-    //return false;
-    return true;
+    return false;
 }
 
 
