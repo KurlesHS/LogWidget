@@ -173,7 +173,7 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
             int height = fm.height() + 6;
             retVal = QSize(width, height);
         } else {
-            qDebug() << " sizeHint" << width;
+            //qDebug() << " sizeHint" << width;
             m_popupWidget->resize(width,m_popupWidget->height());
             QFont itemFont = option.font;
             setPopipWidget(itemFont);
@@ -218,7 +218,7 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 void LogModelData::setPopipWidget(const QFont font) const
 {
     int width = m_popupWidget->width();
-    int offset = m_popupWidget->cleanFiles();
+    m_popupWidget->cleanFiles();
     m_popupWidget->setTime(timeConfirm);
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
     if (!listOfFiles.isEmpty())
@@ -229,20 +229,19 @@ void LogModelData::setPopipWidget(const QFont font) const
     m_popupWidget->setDescription(text);
 
     QFontMetrics fm(font);
-    QRect r = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,text);
+    QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,text);
 
-    int hFile = m_popupWidget->getHeightFile();
     int fileHeight = m_popupWidget->getFileHeight();
-    qDebug() << width << r.height() << hFile << offset << fileHeight;
-
-    m_popupWidget->resize(width,r.height()+hFile+10);
+   // qDebug() << "Text" << r.height()<< "File" << fileHeight;
+    m_popupWidget->adjustSize();
+    m_popupWidget->resize(width,textRect.height()+fileHeight);
     //m_popupWidget->adjustSize();
 }
 
 bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option)
 {    
     bool retval = false;
-    int offset = m_popupWidget->cleanFiles();
+    m_popupWidget->cleanFiles();
     if (!listOfFiles.isEmpty())
         m_popupWidget->setFileInfo();
    QList<QPushButton*> buttons;
@@ -255,9 +254,11 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
    }
 
    QFontMetrics fm(option.font);
-   QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(option.rect.width(),100)),Qt::TextWordWrap,text);
-   int hFile = m_popupWidget->getHeightFile();
-   m_popupWidget->resize(option.rect.width(),textRect.height()+hFile+offset);
+   QRect textRect= fm.boundingRect(QRect(QPoint(0,0),QPoint(option.rect.width(),100)),Qt::TextWordWrap,text);
+
+   int fileHeight = m_popupWidget->getFileHeight();
+   m_popupWidget->adjustSize();
+   m_popupWidget->resize(option.rect.width(),textRect.height()+fileHeight);
 
    //QLabel *lb_hide = m_popupWidget->checkHide();
    //m_popupWidget->adjustSize();
@@ -265,6 +266,7 @@ bool LogModelData::checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &o
    //m_popupWidget->updateGeometry();
    for (int i = 0; i <buttons.size(); ++i) {
     QRect r(buttons.at(i)->mapToParent(QPoint(0, 0)), buttons.at(i)->size());
+    qDebug() << r << pos ;
     //проверка попадание курсора в кнопку на виджете
        if (r.contains(pos)) {
        QString file ("file:///"+listOfFiles.at(i));

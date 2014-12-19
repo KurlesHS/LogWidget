@@ -20,7 +20,7 @@ public:
     void setDescription(const QString &desc);
     void setTime(const QString &time);
     void setFileInfo();
-    int cleanFiles();
+    void cleanFiles();
     QPushButton *addFile(const QString &filename);
     QLabel *addFileLb(const QString &filename);
     QLabel *checkHide();

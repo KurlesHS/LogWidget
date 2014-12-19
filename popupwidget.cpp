@@ -34,11 +34,12 @@ void PopupWidget::setTime(const QString &time)
 void PopupWidget::setFileInfo()
 {
      QLabel *lbinfo = new QLabel(trUtf8("Вложенные файлы:"));
-     fileHeight += lbinfo->height();
+     lbinfo->adjustSize();
+     fileHeight += lbinfo->size().height();
      ui->Layout_file->addWidget(lbinfo);
 }
 
-int PopupWidget::cleanFiles()
+void PopupWidget::cleanFiles()
 {
     QLayoutItem *child;    
     while ((child = ui->Layout_file->takeAt(0)) != 0) {
@@ -51,7 +52,7 @@ int PopupWidget::cleanFiles()
     fileHeight = 0;
     this->adjustSize();
     //qDebug() << "Clean widget " << this->height() << ui->horizontalLayout->itemAt(0)->sizeHint().height() << ui->horizontalLayout->itemAt(1)->sizeHint().height();
-    return this->height()-ui->horizontalLayout->itemAt(0)->sizeHint().height()-ui->horizontalLayout->itemAt(1)->sizeHint().height();
+    //return this->height()-ui->horizontalLayout->itemAt(0)->sizeHint().height()-ui->horizontalLayout->itemAt(1)->sizeHint().height();
 }
 
 QPushButton *PopupWidget::addFile(const QString &filename)
@@ -72,9 +73,9 @@ QPushButton *PopupWidget::addFile(const QString &filename)
                            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
                                        "stop: 0 #f6f7fa, stop: 1 #dadbde);"
                            "min-width: 80px;");
-        but->adjustSize();
-        fileHeight += but->height();
-        ui->Layout_file->addWidget(but);        
+        but->adjustSize();        
+        fileHeight += ui->Layout_file->layout()->spacing()+but->size().height();
+        ui->Layout_file->addWidget(but);
         //qDebug() << "Clean widget " << ui->horizontalLayout->itemAt(1)->geometry().height();
         return but;
     }
@@ -116,7 +117,20 @@ int PopupWidget::getHeightFile()
 }
 int PopupWidget::getFileHeight() const
 {
-    return fileHeight;
+//    int *left;
+//    int *top;
+//    int *right;
+//    int *bottom;
+//    ui->gridLayout->getContentsMargins(left,top,right,bottom);
+    int retVal;
+    if (fileHeight == 0){
+        retVal = 20;
+    } else {
+        retVal = fileHeight;
+    }
+    int offset = ui->verticalLayout->layout()->spacing()+2;
+    retVal +=offset;
+    return retVal;
 }
 
 void PopupWidget::setFileHeight(int value)

@@ -53,10 +53,10 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             LogModelData data = x.value<LogModelData>();
             if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
                     if (index.data(MsgShowRole).toBool()) {                       
-//                            if (data.checkClickMsg(mousePoint,option)){
-//                                model->setData(index,false, MsgShowRole);
-//                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
-//                            }
+                            if (data.checkClickMsg(mousePoint,option)){
+                                model->setData(index,false, MsgShowRole);
+                                //model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                            }
                     } else {
                        if (option.rect.width()-mousePoint.x()<20){
                             if (data.checkBigMsg(option)){
