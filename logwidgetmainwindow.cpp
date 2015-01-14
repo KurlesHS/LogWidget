@@ -25,14 +25,19 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
 
     mDelegate = new LogModelDelegate(this);
 
+    filterLogModel = new QSortFilterProxyModel(this);
+    filterLogModel->setSourceModel(m_model);
+
     m_model->setColumnCount(3);
     m_model->setHorizontalHeaderItem(0,new QStandardItem(trUtf8("Время")));
     m_model->setHorizontalHeaderItem(1,new QStandardItem(trUtf8("Тип")));
     m_model->setHorizontalHeaderItem(2,new QStandardItem(trUtf8("Сообщение")));    
     ui->treeView->setItemDelegate(mDelegate);
-    ui->treeView->setModel(m_model);
+    //ui->treeView->setModel(m_model);
+    ui->treeView->setModel(filterLogModel);
     ui->treeView->setColumnWidth(0,112);
     ui->treeView->setColumnWidth(1,27);
+    ui->treeView->viewport()->installEventFilter(this);
 
      QTimer::singleShot(200, this, SLOT(init()));
 
@@ -124,4 +129,35 @@ void LogWidgetMainWindow::on_pushButton_clicked()
 {
     m_model->addMessage(ui->lineEditPopup->text(),1,LOCAL_MSG,nullptr,ui->confirm->checkState());
    // ui->lineEditPopup->setText("");
+}
+
+void LogWidgetMainWindow::on_pushButton_3_clicked()
+{
+    QString regExp("*22*");
+    //QString regExp("^(?:[%0]+)");
+    //QString temp = "asd";
+
+    //filterLogModel->setFilterRegExp(QRegExp(regExp));
+    //filterLogModel->setFilterKeyColumn(0);
+    filterLogModel->setFilterFixedString(ui->lineEditTehText->text());
+    filterLogModel->setFilterKeyColumn(2);
+    filterLogModel->setFilterRole(DataSortRole);
+}
+
+void LogWidgetMainWindow::on_pushButton_4_clicked()
+{
+    PopupWidget *m_popupWidget = new PopupWidget();
+    QRect rect = m_popupWidget->geometry();
+    rect.setX(10);
+    m_popupWidget->setGeometry(rect);
+    m_popupWidget->show();
+}
+
+void LogWidgetMainWindow::on_treeView_clicked(const QModelIndex &index)
+{
+//    PopupWidget *m_popupWidget = new PopupWidget();
+//    QRect rect = m_popupWidget->geometry();
+//    //index.data()
+//    m_popupWidget->setGeometry(rect);
+//    m_popupWidget->show();
 }

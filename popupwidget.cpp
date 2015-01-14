@@ -6,13 +6,15 @@
 #include <QPushButton>
 #include <QDebug>
 #include <math.h>
+#include <myLabel.h>
 
 PopupWidget::PopupWidget(QWidget *parent):
     QWidget(parent),
     ui(new Ui::PopupWidget)
 {
     ui->setupUi(this);
-    ui->lb_file->resize(0,0);
+    setWindowFlags(Qt::Popup);
+    ui->lb_file->resize(0,0);    
 }
 
 PopupWidget::~PopupWidget()
@@ -85,7 +87,10 @@ QLabel *PopupWidget::addFileLb(const QString &filename)
         int i = filename.lastIndexOf("/");
         QString tmpFile = filename;
         tmpFile.remove(0,i+1);
-        QLabel *lb =new QLabel(tmpFile);
+        //QLabel *lb =new QLabel(tmpFile);
+        myLabel *lb = new myLabel(this);
+        lb->setText(tmpFile);
+        lb->setFileName(filename);
         lb->setToolTip(filename);
         lb->setStyleSheet("text-decoration: underline;");
         lb->adjustSize();
@@ -98,7 +103,7 @@ QLabel *PopupWidget::addFileLb(const QString &filename)
 
 QLabel *PopupWidget::checkHide()
 {
-    QLabel *lb_hide = ui->lb_icon;    
+    QLabel *lb_hide = ui->lb_icon;
     return lb_hide;
 }
 
@@ -126,6 +131,22 @@ void PopupWidget::setFileHeight(int value)
     fileHeight = value;
 }
 
+void PopupWidget::click()
+{
+    hide();
+}
 
+void PopupWidget::resizeEvent(QResizeEvent *event)
+{
+    qDebug() << "Resize";
+}
 
+void PopupWidget::changeEvent(QEvent *)
+{
+    qDebug() << "changeEvent";
+}
 
+void PopupWidget::closeEvent(QCloseEvent *)
+{
+    qDebug() << "closeEvent";
+}

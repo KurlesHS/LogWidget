@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
+#include <QSortFilterProxyModel>
 
 class LogModelExtended;
 class LogModelDelegate;
@@ -37,12 +38,19 @@ private slots:
     void on_pushButton_clicked();
 
     void init();
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void on_treeView_clicked(const QModelIndex &index);
+
 private:
     Ui::LogWidgetMainWindow *ui;
     LogModelExtended *m_model;
     QTimer *m_timer;
     QString LogUUID;
     LogModelDelegate *mDelegate;
+    QSortFilterProxyModel *filterLogModel;
 };
 
 #endif // LOGWIDGETMAINWINDOW_H

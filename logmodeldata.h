@@ -19,11 +19,12 @@
 #define ERROR_MSG 5
 
 enum {
-    LogDataRole = Qt::UserRole+1,   //данные из модели
+    LogDataRole = Qt::UserRole+1,   //данные из модели    
     MsgFlashRole = Qt::UserRole+2,    //
     MsgShowRole = Qt::UserRole+3,    //Сообщение открыто (false- свернуто, true - раазвернуто)
     MsgConfirmRole = Qt::UserRole+4,    //Сообщение требует подтверждения
-    MsgTypeRole = Qt::UserRole+5
+    MsgTypeRole = Qt::UserRole+5,
+    DataSortRole = Qt::UserRole+6
 };
 
 class LogModelData
@@ -37,7 +38,8 @@ public:
     bool checkClickMsg(const QPoint &pos,const QStyleOptionViewItem &option);
     QString getCurrentTime();
     void setConfirm();
-    bool checkBigMsg(const QStyleOptionViewItem &option);
+    bool checkBigMsg(const QStyleOptionViewItem &option) const;
+    void openPopup(const QFont &font, const QPoint &pos, const int width);
 
 public:
     QString fileDataUuid;

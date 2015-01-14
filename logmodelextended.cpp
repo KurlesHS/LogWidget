@@ -28,6 +28,7 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     item->setData(false,MsgShowRole);
     item->setData(confirm,MsgConfirmRole);   
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
+    item->setData(text,DataSortRole);
     auto itemDT = new QStandardItem(data.time);
     itemDT->setEditable(false);        
     auto itemType = new QStandardItem();
@@ -50,12 +51,13 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
     data.text = text;
     data.typeMsg = type;
     data.module = module;
-    auto item = new QStandardItem();
+    auto item = new QStandardItem(text);
     item->setData(QVariant::fromValue<LogModelData>(data));
     item->setEditable(false);
     item->setData(false,MsgShowRole);
     item->setData(false,MsgConfirmRole);
     item->setToolTip(QString("<table><tr><td>").append(text).append("</td></td></table>"));
+    item->setData(text,DataSortRole);
     auto itemDT = new QStandardItem(data.time);
     itemDT->setEditable(false);
     auto itemType = new QStandardItem();
@@ -117,15 +119,17 @@ void LogModelExtended::addMessage(const QString &text, const int type, const int
 
 void LogModelExtended::addFileInMsg(const QString &uuid, const QString &filePath)
 {
-    QStandardItem *item = m_hashOfFileItems.value(uuid, nullptr);
-    if (item) {
-        auto data = item->data().value<LogModelData>();        
-        data.listOfFiles.append(filePath);        
-        if (item->data(MsgConfirmRole) == false && data.timeConfirm.isEmpty()){
-            item->setData(true,MsgConfirmRole);
+   if (!filePath.isEmpty()) {
+        QStandardItem *item = m_hashOfFileItems.value(uuid, nullptr);
+        if (item) {
+            auto data = item->data().value<LogModelData>();
+            data.listOfFiles.append(filePath);
+            if (item->data(MsgConfirmRole) == false && data.timeConfirm.isEmpty()){
+                item->setData(true,MsgConfirmRole);
+            }
+            item->setData(QVariant::fromValue<LogModelData>(data));
         }
-        item->setData(QVariant::fromValue<LogModelData>(data));
-    }
+     }
 }
 
 //void LogModelExtended::addInfoMsg(const QString &text, const QString &uuid)
@@ -156,22 +160,21 @@ bool LogModelExtended::proceesIndex(const QModelIndex &index)
     return item;
 }
 
-//void LogModelExtended::clickPopup(const QModelIndex &index)
-//{
-//    QStandardItem *item = itemFromIndex(index);
-//    qDebug() << "Item " << item->column() ;
-//    if (item) {
-//        bool state = item->data(MsgShowRole).toBool();
-//        item->setData(!state, MsgShowRole);
-//        LogModelData data = item->data().value<LogModelData>();
-//        if (data.timeConfirm.isNull()){
-//            data.timeConfirm = data.getCurrentTime();
-//            item->setData(QVariant::fromValue<LogModelData>(data));
-//        }
+void LogModelExtended::clickPopup(const QModelIndex &index)
+{
+    QStandardItem *item = itemFromIndex(index);
+    if (item) {
+        bool state = item->data(MsgShowRole).toBool();
+        item->setData(!state, MsgShowRole);
+        LogModelData data = item->data().value<LogModelData>();
+        if (data.timeConfirm.isNull()){
+            data.timeConfirm = data.getCurrentTime();
+            item->setData(QVariant::fromValue<LogModelData>(data));
+        }
 
-//        qDebug()<< "State " << state;
-//    }
-//}
+        qDebug()<< "State " << state;
+    }
+}
 
 //QString LogModelExtended::getDateTime(){
 //    QDateTime dateTime = QDateTime::currentDateTime();
@@ -230,9 +233,9 @@ QVariant LogModelExtended::data(const QModelIndex &index, int role) const
     }
     if (role == Qt::ForegroundRole)
     {
-        int type = data(index,MsgTypeRole).toInt();
-        if (type == LOCAL_MSG || type == SEND_MSG || type == RECEIVE_MSG)
-            return QBrush(Qt::red);
+//        int type = data(index,MsgTypeRole).toInt();
+//        if (type == LOCAL_MSG || type == SEND_MSG || type == RECEIVE_MSG)
+//            return QBrush(Qt::red);
 //        else if (type == 1) {
 //            return QBrush(Qt::black);
 //        }

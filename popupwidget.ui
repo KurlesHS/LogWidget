@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>528</width>
-    <height>45</height>
+    <height>51</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,11 @@
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidet {
+border: 1px solid #7f7f7f;
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="sizeConstraint">
@@ -161,7 +166,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="lb_icon">
+        <widget class="myLabel" name="lb_icon">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -205,6 +213,16 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myLabel</class>
+   <extends>QLabel</extends>
+   <header>mylabel.h</header>
+   <slots>
+    <slot>slot1()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resource.qrc"/>
  </resources>

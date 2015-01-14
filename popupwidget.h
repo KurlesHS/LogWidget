@@ -1,6 +1,8 @@
 #ifndef POPUPWIDGET_H
 #define POPUPWIDGET_H
 
+#include "myLabel.h"
+
 #include <QLabel>
 #include <QPushButton>
 #include <QWidget>
@@ -31,7 +33,15 @@ public:
 
 private:
     Ui::PopupWidget *ui;
-    int fileHeight = 0;
+    int fileHeight = 0;    
+
+private slots:
+    void click();
+    virtual void resizeEvent (QResizeEvent * event);
+
+protected:
+    void changeEvent(QEvent *);
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // POPUPWIDGET_H

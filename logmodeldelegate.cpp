@@ -9,16 +9,16 @@
 LogModelDelegate::LogModelDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
-
+   // m_popupWidget = new PopupWidget();
 }
 
 void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {    
     QStyledItemDelegate::paint(painter, option, index);
-    QVariant x = index.data(LogDataRole);    
-    if (x.canConvert<LogModelData>()){
-        LogModelData data = x.value<LogModelData>();
-        data.paint(painter, option, index);
+    QVariant x = index.data(LogDataRole);        
+    if (x.canConvert<LogModelData>()){        
+        LogModelData data = x.value<LogModelData>();        
+            data.paint(painter, option, index);
     }
     else {
         QStyledItemDelegate::paint(painter, option, index);
@@ -30,8 +30,8 @@ QSize LogModelDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
     QSize size(0, 0);
     QVariant x = index.data(LogDataRole);
     if (x.canConvert<LogModelData>()){
-        LogModelData data = x.value<LogModelData>();
-        size = data.sizeHint(option, index, itemWidth);
+        LogModelData data = x.value<LogModelData>();        
+            size = data.sizeHint(option, index, itemWidth);
     } else {
         size = QStyledItemDelegate::sizeHint(option, index);                
     }        
@@ -47,22 +47,32 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
             QPoint mousePoint = mouseEvent->pos();
             QRect localRect = option.rect;
+            //qDebug() << mousePoint << localRect;
             mousePoint.setX(mousePoint.x()-localRect.x());
-            mousePoint.setY(mousePoint.y()-localRect.y());
+            mousePoint.setY(mousePoint.y()-localRect.y());            
+            int popupX = mouseEvent->globalPos().x()-mousePoint.x();
+            int popupY = mouseEvent->globalPos().y()-mousePoint.y();
+            QPoint popupP(popupX,popupY);
+            //QSize popupSize(itemWidth,m_popupWidget->geometry().height());
+            //QRect r(popupP,popupSize);
+            //qDebug() << mouseEvent->globalX() << mouseEvent->globalY() << r;
             LogModelData data = x.value<LogModelData>();
+            qDebug() << itemWidth;
             if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
-                    if (index.data(MsgShowRole).toBool()) {                       
-                            if (data.checkClickMsg(mousePoint,option)){
-                                model->setData(index,false, MsgShowRole);
-                            }
-                    } else {
+//                    if (index.data(MsgShowRole).toBool()) {
+//                            if (data.checkClickMsg(mousePoint,option)){
+//                                model->setData(index,false, MsgShowRole);
+//                            }
+//                    } else {
                        if (option.rect.width()-mousePoint.x()<20){
                             if (data.checkBigMsg(option)){
-                                data.setConfirm();
+                                if (!data.listOfFiles.isEmpty() || index.data(MsgConfirmRole).toBool())
+                                    data.setConfirm();
                                 model->setData(index,true, MsgShowRole);
                                 model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
+                                data.openPopup(option.font,popupP,itemWidth);
                             }
-                       }
+//                       }
                     }
              else if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonDblClick && index.data(MsgConfirmRole).toBool()){
                 if (!data.checkBigMsg(option)) {
@@ -72,6 +82,15 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                 model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
                 }
             }
+            //m_popupWidget->resize(200,100);
+//            m_popupWidget->setFixedSize(popupSize);
+//            qDebug() << m_popupWidget->size();
+//            m_popupWidget->move(popupX,popupY);
+//            qDebug() << m_popupWidget->rect();
+//            m_popupWidget->setDescription(data.text);
+//            m_popupWidget->setTime(data.timeConfirm);
+//            m_popupWidget->show();
+            //m_popupWidget->setFixedSize();
          }
    }
    retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
@@ -86,4 +105,5 @@ void LogModelDelegate::setItemWidth(int value)
 {
     itemWidth = value;
 }
+
 

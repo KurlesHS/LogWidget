@@ -1,6 +1,8 @@
 #ifndef LOGMODELDELEGATE_H
 #define LOGMODELDELEGATE_H
 
+#include "popupwidget.h"
+
 #include <QStyledItemDelegate>
 class LogModelDelegate : public QStyledItemDelegate
 {
@@ -18,6 +20,7 @@ public:
 
 private:
     int itemWidth;
+   // PopupWidget *m_popupWidget;
 
 };
 
