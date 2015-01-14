@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QPushButton>
 #include <QDebug>
+#include <QMouseEvent>
 #include <math.h>
 #include <myLabel.h>
 
@@ -14,7 +15,7 @@ PopupWidget::PopupWidget(QWidget *parent):
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Popup);
-    ui->lb_file->resize(0,0);    
+    ui->lb_file->resize(0,0);
 }
 
 PopupWidget::~PopupWidget()
@@ -103,7 +104,7 @@ QLabel *PopupWidget::addFileLb(const QString &filename)
 
 QLabel *PopupWidget::checkHide()
 {
-    QLabel *lb_hide = ui->lb_icon;
+    QLabel *lb_hide = ui->label_desc;
     return lb_hide;
 }
 
@@ -131,6 +132,12 @@ void PopupWidget::setFileHeight(int value)
     fileHeight = value;
 }
 
+void PopupWidget::setOpenFile()
+{
+    openFile = true;
+}
+
+
 void PopupWidget::click()
 {
     hide();
@@ -146,7 +153,12 @@ void PopupWidget::changeEvent(QEvent *)
     qDebug() << "changeEvent";
 }
 
-void PopupWidget::closeEvent(QCloseEvent *)
+void PopupWidget::closeEvent(QCloseEvent *event)
 {
     qDebug() << "closeEvent";
+    if (openFile)
+    {
+        event->ignore();
+        openFile = false;
+    }
 }

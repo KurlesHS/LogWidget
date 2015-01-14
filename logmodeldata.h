@@ -55,7 +55,7 @@ private:
     //static FileLogWidget *m_fileLogWidget;
     static PopupWidget *m_popupWidget;
     //void setFileLogWidget() const;
-    void setPopipWidget(const QFont font) const;
+    void setPopipWidget(const QFont font, const int width) const;
 
 
 };

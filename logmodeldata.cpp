@@ -121,9 +121,9 @@ QSize LogModelData::sizeHint(const QStyleOptionViewItem &option, const QModelInd
     return retVal;
 }
 
-void LogModelData::setPopipWidget(const QFont font) const
+void LogModelData::setPopipWidget(const QFont font, const int width) const
 {
-    int width = m_popupWidget->width();
+    //int width = m_popupWidget->width();
     m_popupWidget->cleanFiles();
     m_popupWidget->setTime(timeConfirm);
     m_popupWidget->showIconFile(listOfFiles.isEmpty());
@@ -140,8 +140,11 @@ void LogModelData::setPopipWidget(const QFont font) const
     QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,text);
     int fileHeight = m_popupWidget->getFileHeight();
 
-    m_popupWidget->adjustSize();
-    m_popupWidget->resize(width,textRect.height()+fileHeight);
+    m_popupWidget->adjustSize();        
+    m_popupWidget->setFixedSize(width,textRect.height()+fileHeight);
+    //m_popupWidget->resize(width,textRect.height()+fileHeight);
+    QLabel *lb_hide = m_popupWidget->checkHide();
+    qDebug() << textRect.height() << lb_hide->size() << fileHeight << m_popupWidget->height();
     //m_popupWidget->setFixedSize(width,textRect.height()+fileHeight);
 }
 
@@ -218,9 +221,9 @@ bool LogModelData::checkBigMsg(const QStyleOptionViewItem &option) const
 
 void LogModelData::openPopup(const QFont &font, const QPoint &pos,const int width)
 {
-    setPopipWidget(font);
-    m_popupWidget->move(pos);
-    m_popupWidget->setFixedSize(width,m_popupWidget->height());
+    setPopipWidget(font,width);
+    //m_popupWidget->setFixedSize(width,m_popupWidget->height());
+    m_popupWidget->move(pos);    
     qDebug() << m_popupWidget->size();
     m_popupWidget->show();
 }

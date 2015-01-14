@@ -31,9 +31,13 @@ public:
     int getFileHeight() const;
     void setFileHeight(int value);
 
+public slots:
+    void setOpenFile();
+
 private:
     Ui::PopupWidget *ui;
-    int fileHeight = 0;    
+    int fileHeight = 0;
+    bool openFile = false;
 
 private slots:
     void click();
@@ -41,7 +45,7 @@ private slots:
 
 protected:
     void changeEvent(QEvent *);
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // POPUPWIDGET_H

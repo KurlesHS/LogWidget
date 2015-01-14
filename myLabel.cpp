@@ -1,3 +1,5 @@
+#include "popupwidget.h"
+
 #include <myLabel.h>
 #include <QLabel>
 #include <QDebug>
@@ -8,22 +10,24 @@ myLabel::myLabel(QWidget * parent )
 :QLabel(parent)
 {
     connect( this, SIGNAL( clicked() ), this, SLOT( slotClicked() ) );
+    connect( this, SIGNAL(clickFile()), parentWidget(), SLOT(setOpenFile()) );
 }
 
 void myLabel::slotClicked()
 {
-    qDebug()<<"Clicked slot" << fileName;
+    //qDebug()<<"Clicked slot" << fileName;
     if (fileName.isEmpty()){
     this->parentWidget()->hide();
     } else {
-        QString file ("file:///"+fileName);
+        QString file ("file:///"+fileName);        
+        emit clickFile();
         QDesktopServices::openUrl(file);
     }
 }
 
 void myLabel::mousePressEvent ( QMouseEvent * event )
 {
-        qDebug()<<"Clicked Event";
+    //    qDebug()<<"Clicked Event";
     emit clicked();
 }
 QString myLabel::getFileName() const

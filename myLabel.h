@@ -15,6 +15,7 @@ class myLabel : public QLabel
 
 signals:
     void clicked();
+    void clickFile();
 
 public slots:
     void slotClicked();

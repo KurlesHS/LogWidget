@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>PopupWidget</class>
  <widget class="QWidget" name="PopupWidget">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -46,7 +49,7 @@ border: 1px solid #7f7f7f;
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
-      <number>6</number>
+      <number>2</number>
      </property>
      <property name="leftMargin">
       <number>2</number>
@@ -186,6 +189,9 @@ border: 1px solid #7f7f7f;
           <font>
            <pointsize>7</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="midLineWidth">
           <number>0</number>
