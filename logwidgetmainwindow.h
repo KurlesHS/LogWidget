@@ -24,6 +24,7 @@ private slots:
     virtual void resizeEvent (QResizeEvent * event);
 
     virtual bool eventFilter( QObject* obj, QEvent* e );
+    virtual void moveEvent ( QMoveEvent * event );
 
     void on_toolButtonSelectFile_clicked();
 

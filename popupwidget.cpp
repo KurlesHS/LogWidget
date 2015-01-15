@@ -14,7 +14,8 @@ PopupWidget::PopupWidget(QWidget *parent):
     ui(new Ui::PopupWidget)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Popup);
+    //setWindowFlags(Qt::Popup);
+    setWindowFlags(Qt::SplashScreen);
     ui->lb_file->resize(0,0);
 }
 
@@ -145,7 +146,7 @@ void PopupWidget::click()
 
 void PopupWidget::resizeEvent(QResizeEvent *event)
 {
-    qDebug() << "Resize";
+ //   qDebug() << "Resize";
 }
 
 void PopupWidget::changeEvent(QEvent *)
@@ -155,10 +156,11 @@ void PopupWidget::changeEvent(QEvent *)
 
 void PopupWidget::closeEvent(QCloseEvent *event)
 {
-    qDebug() << "closeEvent";
+    qDebug() << "closeEvent" << event;
     if (openFile)
     {
         event->ignore();
         openFile = false;
     }
+    event->ignore();
 }

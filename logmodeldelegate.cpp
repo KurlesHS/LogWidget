@@ -5,11 +5,12 @@
 #include <QDebug>
 #include <QLabel>
 #include <QMouseEvent>
+#include <popupwidget.h>
 
 LogModelDelegate::LogModelDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
-   // m_popupWidget = new PopupWidget();
+   m_popupWidget = new PopupWidget();
 }
 
 void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -49,15 +50,14 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             QRect localRect = option.rect;
             //qDebug() << mousePoint << localRect;
             mousePoint.setX(mousePoint.x()-localRect.x());
-            mousePoint.setY(mousePoint.y()-localRect.y());            
+            mousePoint.setY(mousePoint.y()-localRect.y());
             int popupX = mouseEvent->globalPos().x()-mousePoint.x();
             int popupY = mouseEvent->globalPos().y()-mousePoint.y();
             QPoint popupP(popupX,popupY);
             //QSize popupSize(itemWidth,m_popupWidget->geometry().height());
             //QRect r(popupP,popupSize);
-            //qDebug() << mouseEvent->globalX() << mouseEvent->globalY() << r;
             LogModelData data = x.value<LogModelData>();
-            qDebug() << itemWidth;
+            //qDebug() << itemWidth;
             if (data.type == INFO_MESSAGE && event->type() == QEvent::MouseButtonPress)
 //                    if (index.data(MsgShowRole).toBool()) {
 //                            if (data.checkClickMsg(mousePoint,option)){
@@ -70,7 +70,13 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                                     data.setConfirm();
                                 model->setData(index,true, MsgShowRole);
                                 model->setData(index,QVariant::fromValue<LogModelData>(data),LogDataRole);
-                                data.openPopup(option.font,popupP,itemWidth);
+                                //data.openPopup(option.font,popupP,itemWidth);
+                                offsetPopup.setX(option.rect.x()+2);
+                                offsetPopup.setY(option.rect.y()+2);
+                                //offsetPopup.setX(mousePoint.x());
+                                //offsetPopup.setY(mousePoint.y());
+                                openPopup(data,option.font,itemWidth,popupP);
+                                qDebug() << m_popupWidget->pos();
                             }
 //                       }
                     }
@@ -96,6 +102,11 @@ bool LogModelDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
    retVal = QStyledItemDelegate::editorEvent(event,model,option,index);
    return retVal;
 }
+
+bool LogModelDelegate::eventFilter(QObject *editor, QEvent *event)
+{
+    qDebug() << event;
+}
 int LogModelDelegate::getItemWidth() const
 {
     return itemWidth;
@@ -104,6 +115,42 @@ int LogModelDelegate::getItemWidth() const
 void LogModelDelegate::setItemWidth(int value)
 {
     itemWidth = value;
+}
+
+void LogModelDelegate::movePopup(const QPoint &pos) const
+{
+    QPoint popupPos = pos+offsetPopup;
+    //popupPos.setX(pos.x()+offsetPopup.x());
+    //popupPos.setY(pos.y()+offsetPopup.y());
+    //popupPos. setX(pos.x()+offsetPopup.x());
+    qDebug() << m_popupWidget->pos() << popupPos << pos << offsetPopup;
+    m_popupWidget->move(popupPos);
+}
+
+void LogModelDelegate::openPopup(const LogModelData &data, const QFont &font, const int &width,const QPoint &pos) const
+{
+    //int width = m_popupWidget->width();
+    m_popupWidget->cleanFiles();
+    m_popupWidget->setTime(data.timeConfirm);
+    m_popupWidget->showIconFile(data.listOfFiles.isEmpty());
+    if (!data.listOfFiles.isEmpty())
+        m_popupWidget->setFileInfo();
+
+    for (const QString &file : data.listOfFiles) {
+        m_popupWidget->addFileLb(file);
+    }
+
+    m_popupWidget->setDescription(data.text);
+
+    QFontMetrics fm(font);
+    QRect textRect = fm.boundingRect(QRect(QPoint(0,0),QPoint(width,100)),Qt::TextWordWrap,data.text);
+    int fileHeight = m_popupWidget->getFileHeight();
+
+    m_popupWidget->adjustSize();
+    m_popupWidget->setFixedSize(width,textRect.height()+fileHeight);
+    m_popupWidget->move(pos);
+    m_popupWidget->show();
+
 }
 
 

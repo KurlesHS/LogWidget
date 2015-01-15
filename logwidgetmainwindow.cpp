@@ -50,6 +50,8 @@ LogWidgetMainWindow::~LogWidgetMainWindow()
 
 void LogWidgetMainWindow::init(){
     mDelegate->setItemWidth(ui->treeView->columnWidth(COLUMN_MESSAGE));
+    qDebug() << mapToGlobal(ui->treeView->pos());
+    qDebug() << mapToParent(ui->treeView->pos());
 }
 
 void LogWidgetMainWindow::resizeEvent(QResizeEvent *event)
@@ -66,6 +68,12 @@ bool LogWidgetMainWindow::eventFilter(QObject *obj, QEvent *e)
            qApp->sendEvent( obj, &e );
        }
     return QObject::eventFilter( obj, e );
+}
+
+void LogWidgetMainWindow::moveEvent(QMoveEvent *event)
+{
+    qDebug() << mapToGlobal(ui->treeView->pos());
+    mDelegate->movePopup(mapToParent(ui->treeView->pos()));
 }
 
 
