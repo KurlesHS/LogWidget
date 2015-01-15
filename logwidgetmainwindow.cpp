@@ -23,7 +23,7 @@ LogWidgetMainWindow::LogWidgetMainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->treeView->installEventFilter(this);
 
-    mDelegate = new LogModelDelegate(this);
+    mDelegate = new LogModelDelegate(ui->treeView);
 
     filterLogModel = new QSortFilterProxyModel(this);
     filterLogModel->setSourceModel(m_model);
@@ -154,11 +154,11 @@ void LogWidgetMainWindow::on_pushButton_3_clicked()
 
 void LogWidgetMainWindow::on_pushButton_4_clicked()
 {
-    PopupWidget *m_popupWidget = new PopupWidget();
-    QRect rect = m_popupWidget->geometry();
-    rect.setX(10);
-    m_popupWidget->setGeometry(rect);
-    m_popupWidget->show();
+//    PopupWidget *m_popupWidget = new PopupWidget();
+//    QRect rect = m_popupWidget->geometry();
+//    rect.setX(10);
+//    m_popupWidget->setGeometry(rect);
+//    m_popupWidget->show();
 }
 
 void LogWidgetMainWindow::on_treeView_clicked(const QModelIndex &index)

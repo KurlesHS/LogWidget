@@ -6,11 +6,12 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <popupwidget.h>
+#include <QTreeView>
 
-LogModelDelegate::LogModelDelegate(QObject *parent) :
-    QStyledItemDelegate(parent)
+LogModelDelegate::LogModelDelegate(QTreeView *parentWidget) :
+    QStyledItemDelegate(parentWidget)
 {
-   m_popupWidget = new PopupWidget();
+   m_popupWidget = new PopupWidget(parentWidget);
 }
 
 void LogModelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

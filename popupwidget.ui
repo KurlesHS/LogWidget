@@ -3,7 +3,7 @@
  <class>PopupWidget</class>
  <widget class="QWidget" name="PopupWidget">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>

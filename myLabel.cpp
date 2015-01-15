@@ -10,17 +10,17 @@ myLabel::myLabel(QWidget * parent )
 :QLabel(parent)
 {
     connect( this, SIGNAL( clicked() ), this, SLOT( slotClicked() ) );
-    connect( this, SIGNAL(clickFile()), parentWidget(), SLOT(setOpenFile()) );
+ //   connect( this, SIGNAL(clickFile()), parentWidget(), SLOT(setOpenFile()) );
 }
 
 void myLabel::slotClicked()
 {
     //qDebug()<<"Clicked slot" << fileName;
     if (fileName.isEmpty()){
-    this->parentWidget()->hide();
+        this->parentWidget()->hide();
     } else {
         QString file ("file:///"+fileName);        
-        emit clickFile();
+   //     emit clickFile();
         QDesktopServices::openUrl(file);
     }
 }

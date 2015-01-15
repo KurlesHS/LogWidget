@@ -157,10 +157,10 @@ void PopupWidget::changeEvent(QEvent *)
 void PopupWidget::closeEvent(QCloseEvent *event)
 {
     qDebug() << "closeEvent" << event;
-    if (openFile)
-    {
-        event->ignore();
-        openFile = false;
-    }
-    event->ignore();
+//    if (openFile)
+//    {
+//        event->ignore();
+//        openFile = false;
+//    }
+    //event->ignore();
 }
